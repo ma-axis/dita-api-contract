@@ -1907,14 +1907,18 @@ paths:
                           type: integer
                         role:
                           type: string
-                          nullable: true
+                          enum:
+                          - user
+                          - assistant
                         content:
                           type: string
-                          nullable: true
                         created_at:
                           type: string
                       required:
                       - id
+                      - role
+                      - content
+                      - created_at
                 required:
                 - id
                 - status

@@ -4,6 +4,13 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/). Versionament
 **major** = rota removida ou campo obrigatório mudou de forma incompatível; **minor** = rota ou
 campo novo (aditivo); **patch** = descrição/exemplo/correção sem mudar formato.
 
+## [0.3.3] - 2026-09-10
+
+Patch: `role`/`content`/`created_at` das mensagens (dentro de Conversation) passam de opcionais e
+`role`/`content` de nullable pra `required` e não-nulos, e `role` ganha `enum` (`user`/`assistant`).
+A coluna no banco permite null, mas todo caminho de criação de mensagem no código sempre define os
+três campos — o contrato estava mais frouxo do que o comportamento real da aplicação.
+
 ## [0.3.2] - 2026-09-10
 
 Patch: `customer` (em Order e Conversation, quando incluído) e `installments` (em Order, quando
