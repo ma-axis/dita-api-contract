@@ -502,6 +502,7 @@ paths:
                   required:
                   - id
                   - name
+                  - created_at
                   - delinquent
                   - last_contact_at
     post:
@@ -647,6 +648,7 @@ paths:
                 required:
                 - id
                 - name
+                - created_at
                 - delinquent
                 - last_contact_at
                 - orders
@@ -833,6 +835,7 @@ paths:
                 required:
                 - id
                 - name
+                - created_at
                 - delinquent
                 - last_contact_at
                 - orders
@@ -990,6 +993,7 @@ paths:
                 required:
                 - id
                 - name
+                - created_at
                 - delinquent
                 - last_contact_at
                 - orders

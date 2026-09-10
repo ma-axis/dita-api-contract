@@ -4,6 +4,11 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/). Versionament
 **major** = rota removida ou campo obrigatório mudou de forma incompatível; **minor** = rota ou
 campo novo (aditivo); **patch** = descrição/exemplo/correção sem mudar formato.
 
+## [0.3.4] - 2026-09-10
+
+Patch: `created_at` do Customer (index/show/create/update) passa de opcional pra `required` —
+`customers.created_at` é `null: false` no banco, sempre presente na resposta.
+
 ## [0.3.3] - 2026-09-10
 
 Patch: `role`/`content`/`created_at` das mensagens (dentro de Conversation) passam de opcionais e
