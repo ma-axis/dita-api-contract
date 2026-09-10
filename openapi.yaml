@@ -1,0 +1,746 @@
+---
+openapi: 3.0.1
+info:
+  title: Dita API
+  version: v1
+  description: Contrato gerado a partir de request specs reais (rswag) — nunca editar
+    swagger/v1/swagger.yaml à mão, ele é sobrescrito por `bundle exec rspec` (ver
+    spec/requests/).
+paths:
+  "/api/v1/auth/password":
+    post:
+      summary: esqueci minha senha
+      tags:
+      - Auth
+      parameters: []
+      responses:
+        '200':
+          description: mesma mensagem genérica quando o e-mail existe de verdade
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: object
+                  properties:
+                    email:
+                      type: string
+    put:
+      summary: redefine a senha com o token recebido por e-mail
+      tags:
+      - Auth
+      parameters: []
+      responses:
+        '200':
+          description: troca a senha e já devolve um JWT novo (sign_in_after_reset_password)
+        '422':
+          description: token inválido
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: object
+                  properties:
+                    reset_password_token:
+                      type: string
+                    password:
+                      type: string
+                    password_confirmation:
+                      type: string
+  "/api/v1/auth/signup":
+    post:
+      summary: cria empresa e usuário juntos (signup)
+      tags:
+      - Auth
+      parameters: []
+      responses:
+        '201':
+          description: cria Company + User numa transação e já loga (JWT no header)
+        '422':
+          description: senha e confirmação não batem
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    email:
+                      type: string
+                    password:
+                      type: string
+                    password_confirmation:
+                      type: string
+                company:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+  "/api/v1/auth/sign_in":
+    post:
+      summary: login
+      tags:
+      - Auth
+      parameters: []
+      responses:
+        '200':
+          description: devolve o JWT no header Authorization
+        '401':
+          description: senha errada
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: object
+                  properties:
+                    email:
+                      type: string
+                    password:
+                      type: string
+                  required:
+                  - email
+                  - password
+  "/api/v1/auth/sign_out":
+    delete:
+      summary: logout
+      tags:
+      - Auth
+      security:
+      - bearer_auth: []
+      responses:
+        '204':
+          description: revoga o token (jti muda, token antigo para de funcionar)
+  "/api/v1/companies/{company_id}/contract_templates":
+    parameters:
+    - name: company_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: lista modelos de contrato
+      tags:
+      - ContractTemplates
+      security:
+      - bearer_auth: []
+      responses:
+        '200':
+          description: sucesso
+    post:
+      summary: cria modelo de contrato
+      tags:
+      - ContractTemplates
+      security:
+      - bearer_auth: []
+      parameters: []
+      responses:
+        '201':
+          description: sucesso
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                body:
+                  type: string
+                contract_type:
+                  type: string
+              required:
+              - name
+              - body
+  "/api/v1/companies/{company_id}/contract_templates/{id}":
+    parameters:
+    - name: company_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: detalhe do modelo
+      tags:
+      - ContractTemplates
+      security:
+      - bearer_auth: []
+      responses:
+        '200':
+          description: sucesso
+    patch:
+      summary: atualiza modelo
+      tags:
+      - ContractTemplates
+      security:
+      - bearer_auth: []
+      parameters: []
+      responses:
+        '200':
+          description: desativa o modelo
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                active:
+                  type: boolean
+    delete:
+      summary: remove modelo
+      tags:
+      - ContractTemplates
+      security:
+      - bearer_auth: []
+      responses:
+        '204':
+          description: sucesso
+  "/api/v1/companies/{company_id}/customers":
+    parameters:
+    - name: company_id
+      in: path
+      description: ID da empresa
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: lista clientes
+      tags:
+      - Customers
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: q
+        in: query
+        required: false
+        description: Filtra por nome, telefone, e-mail ou documento
+        schema:
+          type: string
+      responses:
+        '200':
+          description: filtra pela busca (q)
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    phone_number:
+                      type: string
+                      nullable: true
+                    email:
+                      type: string
+                      nullable: true
+                    document:
+                      type: string
+                      nullable: true
+                    created_at:
+                      type: string
+                    delinquent:
+                      type: boolean
+                    last_contact_at:
+                      type: string
+                      nullable: true
+                  required:
+                  - id
+                  - name
+                  - delinquent
+                  - last_contact_at
+    post:
+      summary: cria cliente
+      tags:
+      - Customers
+      security:
+      - bearer_auth: []
+      parameters: []
+      responses:
+        '201':
+          description: cria só com o nome (único campo obrigatório)
+        '422':
+          description: rejeita telefone duplicado na mesma empresa
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                phone_number:
+                  type: string
+                email:
+                  type: string
+                document:
+                  type: string
+              required:
+              - name
+  "/api/v1/companies/{company_id}/customers/{id}":
+    parameters:
+    - name: company_id
+      in: path
+      description: ID da empresa
+      required: true
+      schema:
+        type: integer
+    - name: id
+      in: path
+      description: ID do cliente
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: detalhe do cliente
+      tags:
+      - Customers
+      security:
+      - bearer_auth: []
+      responses:
+        '200':
+          description: inclui pedidos e parcelas do cliente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  delinquent:
+                    type: boolean
+                  orders:
+                    type: array
+                required:
+                - id
+                - name
+                - delinquent
+                - orders
+        '404':
+          description: cliente de outra empresa não é encontrado
+    patch:
+      summary: atualiza cliente
+      tags:
+      - Customers
+      security:
+      - bearer_auth: []
+      parameters: []
+      responses:
+        '200':
+          description: atualiza um campo
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+  "/api/v1/companies/{company_id}/orders":
+    parameters:
+    - name: company_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: lista pedidos, com cliente e parcelas
+      tags:
+      - Orders
+      security:
+      - bearer_auth: []
+      responses:
+        '200':
+          description: sucesso
+    post:
+      summary: cria pedido manualmente (fora do fluxo de IA)
+      tags:
+      - Orders
+      security:
+      - bearer_auth: []
+      parameters: []
+      responses:
+        '201':
+          description: gera o pedido e as parcelas
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                customer_id:
+                  type: integer
+                total_amount:
+                  type: number
+                installments_count:
+                  type: integer
+                first_due_date:
+                  type: string
+              required:
+              - customer_id
+              - total_amount
+  "/api/v1/companies/{company_id}/orders/{id}":
+    parameters:
+    - name: company_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: detalhe do pedido, com contrato
+      tags:
+      - Orders
+      security:
+      - bearer_auth: []
+      responses:
+        '200':
+          description: sucesso
+  "/api/v1/companies/{company_id}/reports/delinquency":
+    parameters:
+    - name: company_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: relatório de adimplência
+      tags:
+      - Reports
+      security:
+      - bearer_auth: []
+      responses:
+        '200':
+          description: total a receber, em atraso, recebido e taxa de adimplência
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total_receivable: {}
+                  total_overdue: {}
+                  total_paid: {}
+                  overdue_installments_count:
+                    type: integer
+                  paid_installments_count:
+                    type: integer
+                  paid_on_time_count:
+                    type: integer
+                  adimplencia_rate:
+                    type: number
+                    nullable: true
+                required:
+                - total_receivable
+                - total_overdue
+                - total_paid
+                - overdue_installments_count
+  "/api/v1/companies/{company_id}/whatsapp/connect":
+    parameters:
+    - name: company_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    post:
+      summary: inicia conexão (QR code)
+      tags:
+      - Whatsapp
+      security:
+      - bearer_auth: []
+      responses:
+        '200':
+          description: devolve o QR code e o status atual
+        '502':
+          description: Evolution API fora do ar
+  "/api/v1/companies/{company_id}/whatsapp/status":
+    parameters:
+    - name: company_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: consulta status da conexão
+      tags:
+      - Whatsapp
+      security:
+      - bearer_auth: []
+      responses:
+        '200':
+          description: sucesso
+  "/api/v1/companies/{company_id}/whatsapp/disconnect":
+    parameters:
+    - name: company_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    delete:
+      summary: desconecta o WhatsApp
+      tags:
+      - Whatsapp
+      security:
+      - bearer_auth: []
+      responses:
+        '200':
+          description: sucesso
+  "/api/v1/companies/{id}":
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: mostra a empresa do usuário logado
+      tags:
+      - Companies
+      security:
+      - bearer_auth: []
+      responses:
+        '200':
+          description: sucesso
+    patch:
+      summary: atualiza a empresa
+      tags:
+      - Companies
+      security:
+      - bearer_auth: []
+      parameters: []
+      responses:
+        '200':
+          description: atualiza o nome
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+  "/api/v1/companies/{company_id}/conversations":
+    parameters:
+    - name: company_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: lista conversas da empresa
+      tags:
+      - Conversations
+      security:
+      - bearer_auth: []
+      responses:
+        '200':
+          description: ordenadas pela mais recente
+  "/api/v1/conversations/{id}":
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: detalhe da conversa, com mensagens
+      tags:
+      - Conversations
+      security:
+      - bearer_auth: []
+      responses:
+        '200':
+          description: inclui as mensagens
+        '404':
+          description: conversa de outra empresa não é encontrada
+  "/api/v1/installments/{id}/pay":
+    parameters:
+    - name: id
+      in: path
+      description: ID da parcela
+      required: true
+      schema:
+        type: integer
+    patch:
+      summary: dono marca a parcela como paga
+      tags:
+      - Installments
+      security:
+      - bearer_auth: []
+      parameters: []
+      responses:
+        '200':
+          description: marca como paga e recalcula o status do pedido
+        '404':
+          description: parcela de outra empresa não é encontrada
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                paid_amount:
+                  type: number
+                payment_method:
+                  type: string
+  "/api/v1/orders/{order_id}/contract":
+    parameters:
+    - name: order_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: mostra o contrato do pedido
+      tags:
+      - OrderContracts
+      security:
+      - bearer_auth: []
+      responses:
+        '200':
+          description: contrato já existe
+    post:
+      summary: salva o conteúdo do contrato (renderizado pelo front)
+      tags:
+      - OrderContracts
+      security:
+      - bearer_auth: []
+      parameters: []
+      responses:
+        '201':
+          description: grava o texto sem interpretar nenhum placeholder
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+                contract_template_id:
+                  type: integer
+              required:
+              - content
+  "/api/v1/companies/{company_id}/products":
+    parameters:
+    - name: company_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: lista produtos
+      tags:
+      - Products
+      security:
+      - bearer_auth: []
+      responses:
+        '200':
+          description: lista o catálogo da empresa
+    post:
+      summary: cria produto
+      tags:
+      - Products
+      security:
+      - bearer_auth: []
+      parameters: []
+      responses:
+        '201':
+          description: cria com sucesso
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                price:
+                  type: number
+                short_desc:
+                  type: string
+                ai_instructions:
+                  type: string
+              required:
+              - name
+              - price
+  "/api/v1/companies/{company_id}/products/{id}":
+    parameters:
+    - name: company_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: detalhe do produto
+      tags:
+      - Products
+      security:
+      - bearer_auth: []
+      responses:
+        '200':
+          description: inclui os requisitos do produto
+    patch:
+      summary: atualiza produto
+      tags:
+      - Products
+      security:
+      - bearer_auth: []
+      parameters: []
+      responses:
+        '200':
+          description: atualiza o preço
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                price:
+                  type: number
+    delete:
+      summary: remove produto
+      tags:
+      - Products
+      security:
+      - bearer_auth: []
+      responses:
+        '204':
+          description: remove com sucesso
+components:
+  securitySchemes:
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+servers:
+- url: http://localhost:3000
+  description: Desenvolvimento local
