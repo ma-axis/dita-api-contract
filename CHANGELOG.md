@@ -4,6 +4,13 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/). Versionament
 **major** = rota removida ou campo obrigatório mudou de forma incompatível; **minor** = rota ou
 campo novo (aditivo); **patch** = descrição/exemplo/correção sem mudar formato.
 
+## [0.3.1] - 2026-09-10
+
+Patch: `whatsapp_status` nas respostas de `connect`/`status`/`disconnect` do WhatsApp também ganha
+`enum` (o mesmo campo já tinha ganhado em Company na v0.2.1, mas essas três respostas específicas
+ficaram de fora). `qrcode.base64`/`qrcode.code` passam a ser `required` dentro do objeto (sempre
+vêm juntos na resposta real da Evolution API).
+
 ## [0.3.0] - 2026-09-10
 
 Schemas de **request body** completos — mesmo problema da v0.2.0, mas do lado do que a API aceita:

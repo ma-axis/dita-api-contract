@@ -1502,6 +1502,10 @@ paths:
                 properties:
                   whatsapp_status:
                     type: string
+                    enum:
+                    - not_connected
+                    - connecting
+                    - connected
                   qrcode:
                     type: object
                     nullable: true
@@ -1510,6 +1514,9 @@ paths:
                         type: string
                       code:
                         type: string
+                    required:
+                    - base64
+                    - code
                 required:
                 - whatsapp_status
         '502':
@@ -1546,6 +1553,10 @@ paths:
                 properties:
                   whatsapp_status:
                     type: string
+                    enum:
+                    - not_connected
+                    - connecting
+                    - connected
                   evolution_state:
                     type: string
                     nullable: true
@@ -1574,6 +1585,10 @@ paths:
                 properties:
                   whatsapp_status:
                     type: string
+                    enum:
+                    - not_connected
+                    - connecting
+                    - connected
                 required:
                 - whatsapp_status
   "/api/v1/companies/{id}":
