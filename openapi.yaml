@@ -337,6 +337,8 @@ paths:
                   type: string
                 contract_type:
                   type: string
+                active:
+                  type: boolean
               required:
               - name
               - body
@@ -429,6 +431,12 @@ paths:
             schema:
               type: object
               properties:
+                name:
+                  type: string
+                body:
+                  type: string
+                contract_type:
+                  type: string
                 active:
                   type: boolean
     delete:
@@ -988,7 +996,13 @@ paths:
             schema:
               type: object
               properties:
+                name:
+                  type: string
+                phone_number:
+                  type: string
                 email:
+                  type: string
+                document:
                   type: string
   "/api/v1/companies/{company_id}/orders":
     parameters:
@@ -1252,6 +1266,15 @@ paths:
                 installments_count:
                   type: integer
                 first_due_date:
+                  type: string
+                interest_rate:
+                  type: number
+                interest_period:
+                  type: string
+                  enum:
+                  - monthly
+                  - daily
+                notes:
                   type: string
               required:
               - customer_id
@@ -1713,6 +1736,21 @@ paths:
               properties:
                 name:
                   type: string
+                document:
+                  type: string
+                phone:
+                  type: string
+                active:
+                  type: boolean
+                evolution_instance_name:
+                  type: string
+                default_late_interest_rate:
+                  type: number
+                default_interest_period:
+                  type: string
+                  enum:
+                  - monthly
+                  - daily
   "/api/v1/companies/{company_id}/conversations":
     parameters:
     - name: company_id
@@ -2045,6 +2083,8 @@ paths:
                   type: string
                 contract_template_id:
                   type: integer
+                accepted_at:
+                  type: string
               required:
               - content
   "/api/v1/companies/{company_id}/products":
@@ -2175,6 +2215,10 @@ paths:
                   type: number
                 short_desc:
                   type: string
+                long_desc:
+                  type: string
+                active:
+                  type: boolean
                 ai_instructions:
                   type: string
               required:
@@ -2335,8 +2379,18 @@ paths:
             schema:
               type: object
               properties:
+                name:
+                  type: string
                 price:
                   type: number
+                short_desc:
+                  type: string
+                long_desc:
+                  type: string
+                active:
+                  type: boolean
+                ai_instructions:
+                  type: string
     delete:
       summary: remove produto
       tags:

@@ -4,6 +4,16 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/). Versionament
 **major** = rota removida ou campo obrigatório mudou de forma incompatível; **minor** = rota ou
 campo novo (aditivo); **patch** = descrição/exemplo/correção sem mudar formato.
 
+## [0.3.0] - 2026-09-10
+
+Schemas de **request body** completos — mesmo problema da v0.2.0, mas do lado do que a API aceita:
+vários `parameter :body` só declaravam os campos que aquele teste específico mandava, não todos os
+campos que o controller realmente aceita (`strong_parameters#permit`). Ex.: `PATCH /companies/:id`
+só documentava `name`, mas o controller aceita `document/phone/active/evolution_instance_name/
+default_late_interest_rate/default_interest_period` também. Completado em Companies, Products,
+Customers, ContractTemplates, Orders e OrderContracts. Minor: só torna aceitável no contrato o que
+a API já aceitava de verdade.
+
 ## [0.2.1] - 2026-09-10
 
 Patch: `whatsapp_status`, `default_interest_period` (Company) e `interest_period` (Order) ganham
