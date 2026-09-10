@@ -16,6 +16,15 @@ paths:
       responses:
         '200':
           description: mesma mensagem genérica quando o e-mail existe de verdade
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
       requestBody:
         content:
           application/json:
@@ -35,8 +44,46 @@ paths:
       responses:
         '200':
           description: troca a senha e já devolve um JWT novo (sign_in_after_reset_password)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      email:
+                        type: string
+                      role:
+                        type: string
+                        enum:
+                        - owner
+                        - staff
+                      company_id:
+                        type: integer
+                    required:
+                    - id
+                    - name
+                    - email
+                    - role
+                    - company_id
+                required:
+                - user
         '422':
           description: token inválido
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
       requestBody:
         content:
           application/json:
@@ -61,8 +108,46 @@ paths:
       responses:
         '201':
           description: cria Company + User numa transação e já loga (JWT no header)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      email:
+                        type: string
+                      role:
+                        type: string
+                        enum:
+                        - owner
+                        - staff
+                      company_id:
+                        type: integer
+                    required:
+                    - id
+                    - name
+                    - email
+                    - role
+                    - company_id
+                required:
+                - user
         '422':
           description: senha e confirmação não batem
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
       requestBody:
         content:
           application/json:
@@ -94,8 +179,46 @@ paths:
       responses:
         '200':
           description: devolve o JWT no header Authorization
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      email:
+                        type: string
+                      role:
+                        type: string
+                        enum:
+                        - owner
+                        - staff
+                      company_id:
+                        type: integer
+                    required:
+                    - id
+                    - name
+                    - email
+                    - role
+                    - company_id
+                required:
+                - user
         '401':
           description: senha errada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
       requestBody:
         content:
           application/json:
@@ -138,6 +261,34 @@ paths:
       responses:
         '200':
           description: sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    company_id:
+                      type: integer
+                    name:
+                      type: string
+                    contract_type:
+                      type: string
+                      nullable: true
+                    body:
+                      type: string
+                    active:
+                      type: boolean
+                    created_at:
+                      type: string
+                    updated_at:
+                      type: string
+                  required:
+                  - id
+                  - name
+                  - body
     post:
       summary: cria modelo de contrato
       tags:
@@ -148,6 +299,32 @@ paths:
       responses:
         '201':
           description: sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  company_id:
+                    type: integer
+                  name:
+                    type: string
+                  contract_type:
+                    type: string
+                    nullable: true
+                  body:
+                    type: string
+                  active:
+                    type: boolean
+                  created_at:
+                    type: string
+                  updated_at:
+                    type: string
+                required:
+                - id
+                - name
+                - body
       requestBody:
         content:
           application/json:
@@ -184,6 +361,32 @@ paths:
       responses:
         '200':
           description: sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  company_id:
+                    type: integer
+                  name:
+                    type: string
+                  contract_type:
+                    type: string
+                    nullable: true
+                  body:
+                    type: string
+                  active:
+                    type: boolean
+                  created_at:
+                    type: string
+                  updated_at:
+                    type: string
+                required:
+                - id
+                - name
+                - body
     patch:
       summary: atualiza modelo
       tags:
@@ -194,6 +397,32 @@ paths:
       responses:
         '200':
           description: desativa o modelo
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  company_id:
+                    type: integer
+                  name:
+                    type: string
+                  contract_type:
+                    type: string
+                    nullable: true
+                  body:
+                    type: string
+                  active:
+                    type: boolean
+                  created_at:
+                    type: string
+                  updated_at:
+                    type: string
+                required:
+                - id
+                - name
+                - body
       requestBody:
         content:
           application/json:
@@ -277,8 +506,149 @@ paths:
       responses:
         '201':
           description: cria só com o nome (único campo obrigatório)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  phone_number:
+                    type: string
+                    nullable: true
+                  email:
+                    type: string
+                    nullable: true
+                  document:
+                    type: string
+                    nullable: true
+                  created_at:
+                    type: string
+                  delinquent:
+                    type: boolean
+                  last_contact_at:
+                    type: string
+                    nullable: true
+                  orders:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        company_id:
+                          type: integer
+                        customer_id:
+                          type: integer
+                        budget_id:
+                          type: integer
+                          nullable: true
+                        conversation_id:
+                          type: integer
+                          nullable: true
+                        code:
+                          type: string
+                          nullable: true
+                        status:
+                          type: string
+                          enum:
+                          - awaiting_payment
+                          - partially_paid
+                          - paid
+                          - overdue
+                          - cancelled
+                        total_amount:
+                          type: string
+                          nullable: true
+                        interest_rate:
+                          type: string
+                          nullable: true
+                        interest_period:
+                          type: string
+                          nullable: true
+                        due_date:
+                          type: string
+                          nullable: true
+                        notes:
+                          type: string
+                          nullable: true
+                        created_at:
+                          type: string
+                        updated_at:
+                          type: string
+                        installments:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                              order_id:
+                                type: integer
+                              installment_number:
+                                type: integer
+                              due_date:
+                                type: string
+                              amount:
+                                type: string
+                              interest_amount:
+                                type: string
+                                nullable: true
+                              paid_amount:
+                                type: string
+                                nullable: true
+                              paid_at:
+                                type: string
+                                nullable: true
+                              payment_method:
+                                type: string
+                                nullable: true
+                              reminders_sent_count:
+                                type: integer
+                                nullable: true
+                              last_reminder_sent_at:
+                                type: string
+                                nullable: true
+                              status:
+                                type: string
+                                enum:
+                                - pending
+                                - paid
+                                - overdue
+                                - cancelled
+                              created_at:
+                                type: string
+                              updated_at:
+                                type: string
+                            required:
+                            - id
+                            - order_id
+                            - installment_number
+                            - due_date
+                            - amount
+                            - status
+                      required:
+                      - id
+                      - status
+                required:
+                - id
+                - name
+                - delinquent
+                - last_contact_at
+                - orders
         '422':
           description: rejeita telefone duplicado na mesma empresa
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
       requestBody:
         content:
           application/json:
@@ -327,17 +697,140 @@ paths:
                     type: integer
                   name:
                     type: string
+                  phone_number:
+                    type: string
+                    nullable: true
+                  email:
+                    type: string
+                    nullable: true
+                  document:
+                    type: string
+                    nullable: true
+                  created_at:
+                    type: string
                   delinquent:
                     type: boolean
+                  last_contact_at:
+                    type: string
+                    nullable: true
                   orders:
                     type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        company_id:
+                          type: integer
+                        customer_id:
+                          type: integer
+                        budget_id:
+                          type: integer
+                          nullable: true
+                        conversation_id:
+                          type: integer
+                          nullable: true
+                        code:
+                          type: string
+                          nullable: true
+                        status:
+                          type: string
+                          enum:
+                          - awaiting_payment
+                          - partially_paid
+                          - paid
+                          - overdue
+                          - cancelled
+                        total_amount:
+                          type: string
+                          nullable: true
+                        interest_rate:
+                          type: string
+                          nullable: true
+                        interest_period:
+                          type: string
+                          nullable: true
+                        due_date:
+                          type: string
+                          nullable: true
+                        notes:
+                          type: string
+                          nullable: true
+                        created_at:
+                          type: string
+                        updated_at:
+                          type: string
+                        installments:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                              order_id:
+                                type: integer
+                              installment_number:
+                                type: integer
+                              due_date:
+                                type: string
+                              amount:
+                                type: string
+                              interest_amount:
+                                type: string
+                                nullable: true
+                              paid_amount:
+                                type: string
+                                nullable: true
+                              paid_at:
+                                type: string
+                                nullable: true
+                              payment_method:
+                                type: string
+                                nullable: true
+                              reminders_sent_count:
+                                type: integer
+                                nullable: true
+                              last_reminder_sent_at:
+                                type: string
+                                nullable: true
+                              status:
+                                type: string
+                                enum:
+                                - pending
+                                - paid
+                                - overdue
+                                - cancelled
+                              created_at:
+                                type: string
+                              updated_at:
+                                type: string
+                            required:
+                            - id
+                            - order_id
+                            - installment_number
+                            - due_date
+                            - amount
+                            - status
+                      required:
+                      - id
+                      - status
                 required:
                 - id
                 - name
                 - delinquent
+                - last_contact_at
                 - orders
         '404':
           description: cliente de outra empresa não é encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
     patch:
       summary: atualiza cliente
       tags:
@@ -348,6 +841,138 @@ paths:
       responses:
         '200':
           description: atualiza um campo
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  phone_number:
+                    type: string
+                    nullable: true
+                  email:
+                    type: string
+                    nullable: true
+                  document:
+                    type: string
+                    nullable: true
+                  created_at:
+                    type: string
+                  delinquent:
+                    type: boolean
+                  last_contact_at:
+                    type: string
+                    nullable: true
+                  orders:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        company_id:
+                          type: integer
+                        customer_id:
+                          type: integer
+                        budget_id:
+                          type: integer
+                          nullable: true
+                        conversation_id:
+                          type: integer
+                          nullable: true
+                        code:
+                          type: string
+                          nullable: true
+                        status:
+                          type: string
+                          enum:
+                          - awaiting_payment
+                          - partially_paid
+                          - paid
+                          - overdue
+                          - cancelled
+                        total_amount:
+                          type: string
+                          nullable: true
+                        interest_rate:
+                          type: string
+                          nullable: true
+                        interest_period:
+                          type: string
+                          nullable: true
+                        due_date:
+                          type: string
+                          nullable: true
+                        notes:
+                          type: string
+                          nullable: true
+                        created_at:
+                          type: string
+                        updated_at:
+                          type: string
+                        installments:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                              order_id:
+                                type: integer
+                              installment_number:
+                                type: integer
+                              due_date:
+                                type: string
+                              amount:
+                                type: string
+                              interest_amount:
+                                type: string
+                                nullable: true
+                              paid_amount:
+                                type: string
+                                nullable: true
+                              paid_at:
+                                type: string
+                                nullable: true
+                              payment_method:
+                                type: string
+                                nullable: true
+                              reminders_sent_count:
+                                type: integer
+                                nullable: true
+                              last_reminder_sent_at:
+                                type: string
+                                nullable: true
+                              status:
+                                type: string
+                                enum:
+                                - pending
+                                - paid
+                                - overdue
+                                - cancelled
+                              created_at:
+                                type: string
+                              updated_at:
+                                type: string
+                            required:
+                            - id
+                            - order_id
+                            - installment_number
+                            - due_date
+                            - amount
+                            - status
+                      required:
+                      - id
+                      - status
+                required:
+                - id
+                - name
+                - delinquent
+                - last_contact_at
+                - orders
       requestBody:
         content:
           application/json:
@@ -372,6 +997,122 @@ paths:
       responses:
         '200':
           description: sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    company_id:
+                      type: integer
+                    customer_id:
+                      type: integer
+                    budget_id:
+                      type: integer
+                      nullable: true
+                    conversation_id:
+                      type: integer
+                      nullable: true
+                    code:
+                      type: string
+                      nullable: true
+                    status:
+                      type: string
+                      enum:
+                      - awaiting_payment
+                      - partially_paid
+                      - paid
+                      - overdue
+                      - cancelled
+                    total_amount:
+                      type: string
+                      nullable: true
+                    interest_rate:
+                      type: string
+                      nullable: true
+                    interest_period:
+                      type: string
+                      nullable: true
+                    due_date:
+                      type: string
+                      nullable: true
+                    notes:
+                      type: string
+                      nullable: true
+                    created_at:
+                      type: string
+                    updated_at:
+                      type: string
+                    customer:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                          nullable: true
+                        phone_number:
+                          type: string
+                          nullable: true
+                      required:
+                      - id
+                    installments:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          order_id:
+                            type: integer
+                          installment_number:
+                            type: integer
+                          due_date:
+                            type: string
+                          amount:
+                            type: string
+                          interest_amount:
+                            type: string
+                            nullable: true
+                          paid_amount:
+                            type: string
+                            nullable: true
+                          paid_at:
+                            type: string
+                            nullable: true
+                          payment_method:
+                            type: string
+                            nullable: true
+                          reminders_sent_count:
+                            type: integer
+                            nullable: true
+                          last_reminder_sent_at:
+                            type: string
+                            nullable: true
+                          status:
+                            type: string
+                            enum:
+                            - pending
+                            - paid
+                            - overdue
+                            - cancelled
+                          created_at:
+                            type: string
+                          updated_at:
+                            type: string
+                        required:
+                        - id
+                        - order_id
+                        - installment_number
+                        - due_date
+                        - amount
+                        - status
+                  required:
+                  - id
+                  - status
     post:
       summary: cria pedido manualmente (fora do fluxo de IA)
       tags:
@@ -382,6 +1123,107 @@ paths:
       responses:
         '201':
           description: gera o pedido e as parcelas
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  company_id:
+                    type: integer
+                  customer_id:
+                    type: integer
+                  budget_id:
+                    type: integer
+                    nullable: true
+                  conversation_id:
+                    type: integer
+                    nullable: true
+                  code:
+                    type: string
+                    nullable: true
+                  status:
+                    type: string
+                    enum:
+                    - awaiting_payment
+                    - partially_paid
+                    - paid
+                    - overdue
+                    - cancelled
+                  total_amount:
+                    type: string
+                    nullable: true
+                  interest_rate:
+                    type: string
+                    nullable: true
+                  interest_period:
+                    type: string
+                    nullable: true
+                  due_date:
+                    type: string
+                    nullable: true
+                  notes:
+                    type: string
+                    nullable: true
+                  created_at:
+                    type: string
+                  updated_at:
+                    type: string
+                  installments:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        order_id:
+                          type: integer
+                        installment_number:
+                          type: integer
+                        due_date:
+                          type: string
+                        amount:
+                          type: string
+                        interest_amount:
+                          type: string
+                          nullable: true
+                        paid_amount:
+                          type: string
+                          nullable: true
+                        paid_at:
+                          type: string
+                          nullable: true
+                        payment_method:
+                          type: string
+                          nullable: true
+                        reminders_sent_count:
+                          type: integer
+                          nullable: true
+                        last_reminder_sent_at:
+                          type: string
+                          nullable: true
+                        status:
+                          type: string
+                          enum:
+                          - pending
+                          - paid
+                          - overdue
+                          - cancelled
+                        created_at:
+                          type: string
+                        updated_at:
+                          type: string
+                      required:
+                      - id
+                      - order_id
+                      - installment_number
+                      - due_date
+                      - amount
+                      - status
+                required:
+                - id
+                - status
       requestBody:
         content:
           application/json:
@@ -420,6 +1262,144 @@ paths:
       responses:
         '200':
           description: sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  company_id:
+                    type: integer
+                  customer_id:
+                    type: integer
+                  budget_id:
+                    type: integer
+                    nullable: true
+                  conversation_id:
+                    type: integer
+                    nullable: true
+                  code:
+                    type: string
+                    nullable: true
+                  status:
+                    type: string
+                    enum:
+                    - awaiting_payment
+                    - partially_paid
+                    - paid
+                    - overdue
+                    - cancelled
+                  total_amount:
+                    type: string
+                    nullable: true
+                  interest_rate:
+                    type: string
+                    nullable: true
+                  interest_period:
+                    type: string
+                    nullable: true
+                  due_date:
+                    type: string
+                    nullable: true
+                  notes:
+                    type: string
+                    nullable: true
+                  created_at:
+                    type: string
+                  updated_at:
+                    type: string
+                  customer:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                        nullable: true
+                      phone_number:
+                        type: string
+                        nullable: true
+                    required:
+                    - id
+                  contract:
+                    type: object
+                    nullable: true
+                    properties:
+                      id:
+                        type: integer
+                      order_id:
+                        type: integer
+                      contract_template_id:
+                        type: integer
+                        nullable: true
+                      content:
+                        type: string
+                      accepted_at:
+                        type: string
+                        nullable: true
+                      created_at:
+                        type: string
+                      updated_at:
+                        type: string
+                    required:
+                    - id
+                    - order_id
+                    - content
+                  installments:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        order_id:
+                          type: integer
+                        installment_number:
+                          type: integer
+                        due_date:
+                          type: string
+                        amount:
+                          type: string
+                        interest_amount:
+                          type: string
+                          nullable: true
+                        paid_amount:
+                          type: string
+                          nullable: true
+                        paid_at:
+                          type: string
+                          nullable: true
+                        payment_method:
+                          type: string
+                          nullable: true
+                        reminders_sent_count:
+                          type: integer
+                          nullable: true
+                        last_reminder_sent_at:
+                          type: string
+                          nullable: true
+                        status:
+                          type: string
+                          enum:
+                          - pending
+                          - paid
+                          - overdue
+                          - cancelled
+                        created_at:
+                          type: string
+                        updated_at:
+                          type: string
+                      required:
+                      - id
+                      - order_id
+                      - installment_number
+                      - due_date
+                      - amount
+                      - status
+                required:
+                - id
+                - status
   "/api/v1/companies/{company_id}/reports/delinquency":
     parameters:
     - name: company_id
@@ -474,8 +1454,34 @@ paths:
       responses:
         '200':
           description: devolve o QR code e o status atual
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  whatsapp_status:
+                    type: string
+                  qrcode:
+                    type: object
+                    nullable: true
+                    properties:
+                      base64:
+                        type: string
+                      code:
+                        type: string
+                required:
+                - whatsapp_status
         '502':
           description: Evolution API fora do ar
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
   "/api/v1/companies/{company_id}/whatsapp/status":
     parameters:
     - name: company_id
@@ -492,6 +1498,18 @@ paths:
       responses:
         '200':
           description: sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  whatsapp_status:
+                    type: string
+                  evolution_state:
+                    type: string
+                    nullable: true
+                required:
+                - whatsapp_status
   "/api/v1/companies/{company_id}/whatsapp/disconnect":
     parameters:
     - name: company_id
@@ -508,6 +1526,15 @@ paths:
       responses:
         '200':
           description: sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  whatsapp_status:
+                    type: string
+                required:
+                - whatsapp_status
   "/api/v1/companies/{id}":
     parameters:
     - name: id
@@ -524,6 +1551,62 @@ paths:
       responses:
         '200':
           description: sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                    nullable: true
+                  document:
+                    type: string
+                    nullable: true
+                  phone:
+                    type: string
+                    nullable: true
+                  active:
+                    type: boolean
+                    nullable: true
+                  evolution_instance_name:
+                    type: string
+                    nullable: true
+                  whatsapp_status:
+                    type: string
+                  whatsapp_connected_at:
+                    type: string
+                    nullable: true
+                  logo_url:
+                    type: string
+                    nullable: true
+                  logo_public_id:
+                    type: string
+                    nullable: true
+                  default_late_interest_rate:
+                    type: string
+                    nullable: true
+                  default_interest_period:
+                    type: string
+                    nullable: true
+                  settings:
+                    nullable: true
+                  plan_id:
+                    type: integer
+                    nullable: true
+                  messages_used_current_period:
+                    type: integer
+                  current_period_started_at:
+                    type: string
+                    nullable: true
+                  created_at:
+                    type: string
+                  updated_at:
+                    type: string
+                required:
+                - id
+                - whatsapp_status
     patch:
       summary: atualiza a empresa
       tags:
@@ -534,6 +1617,62 @@ paths:
       responses:
         '200':
           description: atualiza o nome
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                    nullable: true
+                  document:
+                    type: string
+                    nullable: true
+                  phone:
+                    type: string
+                    nullable: true
+                  active:
+                    type: boolean
+                    nullable: true
+                  evolution_instance_name:
+                    type: string
+                    nullable: true
+                  whatsapp_status:
+                    type: string
+                  whatsapp_connected_at:
+                    type: string
+                    nullable: true
+                  logo_url:
+                    type: string
+                    nullable: true
+                  logo_public_id:
+                    type: string
+                    nullable: true
+                  default_late_interest_rate:
+                    type: string
+                    nullable: true
+                  default_interest_period:
+                    type: string
+                    nullable: true
+                  settings:
+                    nullable: true
+                  plan_id:
+                    type: integer
+                    nullable: true
+                  messages_used_current_period:
+                    type: integer
+                  current_period_started_at:
+                    type: string
+                    nullable: true
+                  created_at:
+                    type: string
+                  updated_at:
+                    type: string
+                required:
+                - id
+                - whatsapp_status
       requestBody:
         content:
           application/json:
@@ -558,6 +1697,54 @@ paths:
       responses:
         '200':
           description: ordenadas pela mais recente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    company_id:
+                      type: integer
+                    customer_id:
+                      type: integer
+                    status:
+                      type: string
+                      enum:
+                      - unassigned
+                      - bot_collecting_intent
+                      - bot_collecting_requirements
+                      - budget_ready
+                      - budget_generated
+                      - waiting_budget_approval
+                      - budget_approved
+                      - budget_rejected
+                      - answering_faq
+                      - human_handoff
+                      - resolved
+                      nullable: true
+                    created_at:
+                      type: string
+                    updated_at:
+                      type: string
+                    customer:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                          nullable: true
+                        phone_number:
+                          type: string
+                          nullable: true
+                      required:
+                      - id
+                  required:
+                  - id
+                  - status
   "/api/v1/conversations/{id}":
     parameters:
     - name: id
@@ -574,8 +1761,80 @@ paths:
       responses:
         '200':
           description: inclui as mensagens
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  company_id:
+                    type: integer
+                  customer_id:
+                    type: integer
+                  status:
+                    type: string
+                    enum:
+                    - unassigned
+                    - bot_collecting_intent
+                    - bot_collecting_requirements
+                    - budget_ready
+                    - budget_generated
+                    - waiting_budget_approval
+                    - budget_approved
+                    - budget_rejected
+                    - answering_faq
+                    - human_handoff
+                    - resolved
+                    nullable: true
+                  created_at:
+                    type: string
+                  updated_at:
+                    type: string
+                  customer:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                        nullable: true
+                      phone_number:
+                        type: string
+                        nullable: true
+                    required:
+                    - id
+                  messages:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        role:
+                          type: string
+                          nullable: true
+                        content:
+                          type: string
+                          nullable: true
+                        created_at:
+                          type: string
+                      required:
+                      - id
+                required:
+                - id
+                - status
         '404':
           description: conversa de outra empresa não é encontrada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
   "/api/v1/installments/{id}/pay":
     parameters:
     - name: id
@@ -594,8 +1853,68 @@ paths:
       responses:
         '200':
           description: marca como paga e recalcula o status do pedido
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  order_id:
+                    type: integer
+                  installment_number:
+                    type: integer
+                  due_date:
+                    type: string
+                  amount:
+                    type: string
+                  interest_amount:
+                    type: string
+                    nullable: true
+                  paid_amount:
+                    type: string
+                    nullable: true
+                  paid_at:
+                    type: string
+                    nullable: true
+                  payment_method:
+                    type: string
+                    nullable: true
+                  reminders_sent_count:
+                    type: integer
+                    nullable: true
+                  last_reminder_sent_at:
+                    type: string
+                    nullable: true
+                  status:
+                    type: string
+                    enum:
+                    - pending
+                    - paid
+                    - overdue
+                    - cancelled
+                  created_at:
+                    type: string
+                  updated_at:
+                    type: string
+                required:
+                - id
+                - order_id
+                - installment_number
+                - due_date
+                - amount
+                - status
         '404':
           description: parcela de outra empresa não é encontrada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
       requestBody:
         content:
           application/json:
@@ -622,6 +1941,32 @@ paths:
       responses:
         '200':
           description: contrato já existe
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                properties:
+                  id:
+                    type: integer
+                  order_id:
+                    type: integer
+                  contract_template_id:
+                    type: integer
+                    nullable: true
+                  content:
+                    type: string
+                  accepted_at:
+                    type: string
+                    nullable: true
+                  created_at:
+                    type: string
+                  updated_at:
+                    type: string
+                required:
+                - id
+                - order_id
+                - content
     post:
       summary: salva o conteúdo do contrato (renderizado pelo front)
       tags:
@@ -632,6 +1977,32 @@ paths:
       responses:
         '201':
           description: grava o texto sem interpretar nenhum placeholder
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                properties:
+                  id:
+                    type: integer
+                  order_id:
+                    type: integer
+                  contract_template_id:
+                    type: integer
+                    nullable: true
+                  content:
+                    type: string
+                  accepted_at:
+                    type: string
+                    nullable: true
+                  created_at:
+                    type: string
+                  updated_at:
+                    type: string
+                required:
+                - id
+                - order_id
+                - content
       requestBody:
         content:
           application/json:
@@ -660,6 +2031,52 @@ paths:
       responses:
         '200':
           description: lista o catálogo da empresa
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    company_id:
+                      type: integer
+                    name:
+                      type: string
+                      nullable: true
+                    short_desc:
+                      type: string
+                      nullable: true
+                    long_desc:
+                      type: string
+                      nullable: true
+                    price:
+                      type: string
+                      nullable: true
+                    active:
+                      type: boolean
+                      nullable: true
+                    ai_instructions:
+                      type: string
+                      nullable: true
+                    image_url:
+                      type: string
+                      nullable: true
+                    image_public_id:
+                      type: string
+                      nullable: true
+                    contract_template_id:
+                      type: integer
+                      nullable: true
+                    metadata:
+                      nullable: true
+                    created_at:
+                      type: string
+                    updated_at:
+                      type: string
+                  required:
+                  - id
     post:
       summary: cria produto
       tags:
@@ -670,6 +2087,50 @@ paths:
       responses:
         '201':
           description: cria com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  company_id:
+                    type: integer
+                  name:
+                    type: string
+                    nullable: true
+                  short_desc:
+                    type: string
+                    nullable: true
+                  long_desc:
+                    type: string
+                    nullable: true
+                  price:
+                    type: string
+                    nullable: true
+                  active:
+                    type: boolean
+                    nullable: true
+                  ai_instructions:
+                    type: string
+                    nullable: true
+                  image_url:
+                    type: string
+                    nullable: true
+                  image_public_id:
+                    type: string
+                    nullable: true
+                  contract_template_id:
+                    type: integer
+                    nullable: true
+                  metadata:
+                    nullable: true
+                  created_at:
+                    type: string
+                  updated_at:
+                    type: string
+                required:
+                - id
       requestBody:
         content:
           application/json:
@@ -708,6 +2169,80 @@ paths:
       responses:
         '200':
           description: inclui os requisitos do produto
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  company_id:
+                    type: integer
+                  name:
+                    type: string
+                    nullable: true
+                  short_desc:
+                    type: string
+                    nullable: true
+                  long_desc:
+                    type: string
+                    nullable: true
+                  price:
+                    type: string
+                    nullable: true
+                  active:
+                    type: boolean
+                    nullable: true
+                  ai_instructions:
+                    type: string
+                    nullable: true
+                  image_url:
+                    type: string
+                    nullable: true
+                  image_public_id:
+                    type: string
+                    nullable: true
+                  contract_template_id:
+                    type: integer
+                    nullable: true
+                  metadata:
+                    nullable: true
+                  created_at:
+                    type: string
+                  updated_at:
+                    type: string
+                  product_requirements:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        product_id:
+                          type: integer
+                        key:
+                          type: string
+                          nullable: true
+                        label:
+                          type: string
+                          nullable: true
+                        requirement_type:
+                          type: string
+                          nullable: true
+                        is_required:
+                          type: boolean
+                          nullable: true
+                        options:
+                          nullable: true
+                        created_at:
+                          type: string
+                        updated_at:
+                          type: string
+                      required:
+                      - id
+                      - product_id
+                required:
+                - id
     patch:
       summary: atualiza produto
       tags:
@@ -718,6 +2253,50 @@ paths:
       responses:
         '200':
           description: atualiza o preço
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  company_id:
+                    type: integer
+                  name:
+                    type: string
+                    nullable: true
+                  short_desc:
+                    type: string
+                    nullable: true
+                  long_desc:
+                    type: string
+                    nullable: true
+                  price:
+                    type: string
+                    nullable: true
+                  active:
+                    type: boolean
+                    nullable: true
+                  ai_instructions:
+                    type: string
+                    nullable: true
+                  image_url:
+                    type: string
+                    nullable: true
+                  image_public_id:
+                    type: string
+                    nullable: true
+                  contract_template_id:
+                    type: integer
+                    nullable: true
+                  metadata:
+                    nullable: true
+                  created_at:
+                    type: string
+                  updated_at:
+                    type: string
+                required:
+                - id
       requestBody:
         content:
           application/json:
