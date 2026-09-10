@@ -36,6 +36,10 @@ paths:
                   properties:
                     email:
                       type: string
+                  required:
+                  - email
+              required:
+              - user
     put:
       summary: redefine a senha com o token recebido por e-mail
       tags:
@@ -99,6 +103,12 @@ paths:
                       type: string
                     password_confirmation:
                       type: string
+                  required:
+                  - reset_password_token
+                  - password
+                  - password_confirmation
+              required:
+              - user
   "/api/v1/auth/signup":
     post:
       summary: cria empresa e usuário juntos (signup)
@@ -165,11 +175,21 @@ paths:
                       type: string
                     password_confirmation:
                       type: string
+                  required:
+                  - name
+                  - email
+                  - password
+                  - password_confirmation
                 company:
                   type: object
                   properties:
                     name:
                       type: string
+                  required:
+                  - name
+              required:
+              - user
+              - company
   "/api/v1/auth/sign_in":
     post:
       summary: login
@@ -235,6 +255,8 @@ paths:
                   required:
                   - email
                   - password
+              required:
+              - user
   "/api/v1/auth/sign_out":
     delete:
       summary: logout

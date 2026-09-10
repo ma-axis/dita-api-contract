@@ -1,6 +1,6 @@
 {
   "name": "@dita/api-contract",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "description": "Contrato OpenAPI da API do Dita, gerado a partir de request specs reais (rswag) no dita_core. Consumido por dita_web e dita_mobile via Kubb.",
   "license": "UNLICENSED",
   "private": true,

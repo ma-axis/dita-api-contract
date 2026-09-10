@@ -4,6 +4,12 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/). Versionament
 **major** = rota removida ou campo obrigatório mudou de forma incompatível; **minor** = rota ou
 campo novo (aditivo); **patch** = descrição/exemplo/correção sem mudar formato.
 
+## [0.3.6] - 2026-09-10
+
+Patch: request bodies de Auth (sign_in, signup, password forgot/reset) tinham todos os campos
+opcionais — nenhum tinha `required`, então o Kubb gerava `user?: {email?: string; ...}` mesmo
+sendo campos obrigatórios de verdade nos controllers. Completado `required` em todos os quatro.
+
 ## [0.3.5] - 2026-09-10
 
 Patch: dois problemas achados ao migrar o frontend pros tipos gerados (dita_web). (1)
