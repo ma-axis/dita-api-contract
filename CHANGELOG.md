@@ -4,6 +4,13 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/). Versionament
 **major** = rota removida ou campo obrigatório mudou de forma incompatível; **minor** = rota ou
 campo novo (aditivo); **patch** = descrição/exemplo/correção sem mudar formato.
 
+## [0.2.1] - 2026-09-10
+
+Patch: `whatsapp_status`, `default_interest_period` (Company) e `interest_period` (Order) ganham
+`enum` no schema — antes eram `string` genérico, agora viram union type de verdade nos tipos
+gerados (`'not_connected' | 'connecting' | 'connected'` etc.), igual o que os DTOs escritos à mão
+já tinham. Nenhum formato de rota mudou.
+
 ## [0.2.0] - 2026-09-10
 
 Schemas de resposta completos — na v0.1.0, só 3 de ~43 respostas declaravam `schema` (o resto só
