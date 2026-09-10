@@ -4,6 +4,13 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/). Versionament
 **major** = rota removida ou campo obrigatório mudou de forma incompatível; **minor** = rota ou
 campo novo (aditivo); **patch** = descrição/exemplo/correção sem mudar formato.
 
+## [0.3.2] - 2026-09-10
+
+Patch: `customer` (em Order e Conversation, quando incluído) e `installments` (em Order, quando
+incluído) passam de opcionais pra `required` — ambas as associações são `belongs_to`/`has_many`
+não-nulas no schema real (`orders.customer_id`/`conversations.customer_id` são `null: false`), e
+sempre vêm presentes na serialização, então o contrato estava mais frouxo do que a API de verdade.
+
 ## [0.3.1] - 2026-09-10
 
 Patch: `whatsapp_status` nas respostas de `connect`/`status`/`disconnect` do WhatsApp também ganha
