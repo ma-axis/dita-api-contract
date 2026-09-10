@@ -289,6 +289,8 @@ paths:
                   - id
                   - name
                   - body
+                  - created_at
+                  - updated_at
     post:
       summary: cria modelo de contrato
       tags:
@@ -325,6 +327,8 @@ paths:
                 - id
                 - name
                 - body
+                - created_at
+                - updated_at
       requestBody:
         content:
           application/json:
@@ -389,6 +393,8 @@ paths:
                 - id
                 - name
                 - body
+                - created_at
+                - updated_at
     patch:
       summary: atualiza modelo
       tags:
@@ -425,6 +431,8 @@ paths:
                 - id
                 - name
                 - body
+                - created_at
+                - updated_at
       requestBody:
         content:
           application/json:
@@ -641,9 +649,13 @@ paths:
                             - due_date
                             - amount
                             - status
+                            - created_at
+                            - updated_at
                       required:
                       - id
                       - status
+                      - created_at
+                      - updated_at
                       - installments
                 required:
                 - id
@@ -828,9 +840,13 @@ paths:
                             - due_date
                             - amount
                             - status
+                            - created_at
+                            - updated_at
                       required:
                       - id
                       - status
+                      - created_at
+                      - updated_at
                       - installments
                 required:
                 - id
@@ -986,9 +1002,13 @@ paths:
                             - due_date
                             - amount
                             - status
+                            - created_at
+                            - updated_at
                       required:
                       - id
                       - status
+                      - created_at
+                      - updated_at
                       - installments
                 required:
                 - id
@@ -1143,9 +1163,13 @@ paths:
                         - due_date
                         - amount
                         - status
+                        - created_at
+                        - updated_at
                   required:
                   - id
                   - status
+                  - created_at
+                  - updated_at
                   - customer
                   - installments
     post:
@@ -1259,9 +1283,13 @@ paths:
                       - due_date
                       - amount
                       - status
+                      - created_at
+                      - updated_at
                 required:
                 - id
                 - status
+                - created_at
+                - updated_at
                 - installments
       requestBody:
         content:
@@ -1397,6 +1425,8 @@ paths:
                     - id
                     - order_id
                     - content
+                    - created_at
+                    - updated_at
                   installments:
                     type: array
                     items:
@@ -1448,9 +1478,13 @@ paths:
                       - due_date
                       - amount
                       - status
+                      - created_at
+                      - updated_at
                 required:
                 - id
                 - status
+                - created_at
+                - updated_at
                 - customer
                 - installments
   "/api/v1/companies/{company_id}/reports/delinquency":
@@ -1474,9 +1508,12 @@ paths:
               schema:
                 type: object
                 properties:
-                  total_receivable: {}
-                  total_overdue: {}
-                  total_paid: {}
+                  total_receivable:
+                    type: string
+                  total_overdue:
+                    type: string
+                  total_paid:
+                    type: string
                   overdue_installments_count:
                     type: integer
                   paid_installments_count:
@@ -1491,6 +1528,8 @@ paths:
                 - total_overdue
                 - total_paid
                 - overdue_installments_count
+                - paid_installments_count
+                - paid_on_time_count
   "/api/v1/companies/{company_id}/whatsapp/connect":
     parameters:
     - name: company_id
@@ -1682,6 +1721,8 @@ paths:
                 required:
                 - id
                 - whatsapp_status
+                - created_at
+                - updated_at
     patch:
       summary: atualiza a empresa
       tags:
@@ -1755,6 +1796,8 @@ paths:
                 required:
                 - id
                 - whatsapp_status
+                - created_at
+                - updated_at
       requestBody:
         content:
           application/json:
@@ -1843,6 +1886,8 @@ paths:
                   - id
                   - status
                   - customer
+                  - created_at
+                  - updated_at
   "/api/v1/conversations/{id}":
     parameters:
     - name: id
@@ -1927,6 +1972,8 @@ paths:
                 - id
                 - status
                 - customer
+                - created_at
+                - updated_at
         '404':
           description: conversa de outra empresa não é encontrada
           content:
@@ -2007,6 +2054,8 @@ paths:
                 - due_date
                 - amount
                 - status
+                - created_at
+                - updated_at
         '404':
           description: parcela de outra empresa não é encontrada
           content:
@@ -2070,6 +2119,8 @@ paths:
                 - id
                 - order_id
                 - content
+                - created_at
+                - updated_at
     post:
       summary: salva o conteúdo do contrato (renderizado pelo front)
       tags:
@@ -2106,6 +2157,8 @@ paths:
                 - id
                 - order_id
                 - content
+                - created_at
+                - updated_at
       requestBody:
         content:
           application/json:
@@ -2182,6 +2235,8 @@ paths:
                       type: string
                   required:
                   - id
+                  - created_at
+                  - updated_at
     post:
       summary: cria produto
       tags:
@@ -2236,6 +2291,8 @@ paths:
                     type: string
                 required:
                 - id
+                - created_at
+                - updated_at
       requestBody:
         content:
           application/json:
@@ -2350,8 +2407,12 @@ paths:
                       required:
                       - id
                       - product_id
+                      - created_at
+                      - updated_at
                 required:
                 - id
+                - created_at
+                - updated_at
     patch:
       summary: atualiza produto
       tags:
@@ -2406,6 +2467,8 @@ paths:
                     type: string
                 required:
                 - id
+                - created_at
+                - updated_at
       requestBody:
         content:
           application/json:

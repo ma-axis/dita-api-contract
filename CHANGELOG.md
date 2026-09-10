@@ -4,6 +4,18 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/). Versionament
 **major** = rota removida ou campo obrigatório mudou de forma incompatível; **minor** = rota ou
 campo novo (aditivo); **patch** = descrição/exemplo/correção sem mudar formato.
 
+## [0.3.5] - 2026-09-10
+
+Patch: dois problemas achados ao migrar o frontend pros tipos gerados (dita_web). (1)
+`created_at`/`updated_at` viravam `unknown`/opcional em quase todo model (Order, Installment,
+Contract, ContractTemplate, ProductRequirement, Product, Company, Conversation) — as colunas são
+`null: false` no banco (timestamps padrão do Rails), agora `required` em todos os schemas. (2) O
+relatório de adimplência (`GET .../reports/delinquency`) tinha `total_receivable`/`total_overdue`/
+`total_paid` sem tipo nenhum (`schema` vazio, gerava `unknown`) — são `BigDecimal` de um `.sum(...)`
+que o Rails serializa como string no JSON (confirmado rodando o service de verdade), agora
+`type: string`. `paid_installments_count`/`paid_on_time_count` também viram `required` (sempre
+presentes, só não estavam declarados).
+
 ## [0.3.4] - 2026-09-10
 
 Patch: `created_at` do Customer (index/show/create/update) passa de opcional pra `required` —
