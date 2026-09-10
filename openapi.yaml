@@ -1886,7 +1886,6 @@ paths:
                       - answering_faq
                       - human_handoff
                       - resolved
-                      nullable: true
                     created_at:
                       type: string
                     updated_at:
@@ -1951,7 +1950,6 @@ paths:
                     - answering_faq
                     - human_handoff
                     - resolved
-                    nullable: true
                   created_at:
                     type: string
                   updated_at:

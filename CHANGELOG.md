@@ -4,6 +4,11 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/). Versionament
 **major** = rota removida ou campo obrigatório mudou de forma incompatível; **minor** = rota ou
 campo novo (aditivo); **patch** = descrição/exemplo/correção sem mudar formato.
 
+## [0.3.7] - 2026-09-10
+
+Patch: `status` de Conversation deixa de ser `nullable` — a state machine (AASM) sempre define um
+estado inicial (`unassigned`) na criação, nunca fica null de verdade.
+
 ## [0.3.6] - 2026-09-10
 
 Patch: request bodies de Auth (sign_in, signup, password forgot/reset) tinham todos os campos
