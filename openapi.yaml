@@ -1161,6 +1161,41 @@ paths:
                           nullable: true
                       required:
                       - id
+                    contract:
+                      type: object
+                      nullable: true
+                      properties:
+                        id:
+                          type: integer
+                        order_id:
+                          type: integer
+                        contract_template_id:
+                          type: integer
+                          nullable: true
+                        content:
+                          type: string
+                          nullable: true
+                        accepted_at:
+                          type: string
+                          nullable: true
+                        file_url:
+                          type: string
+                          nullable: true
+                        file_filename:
+                          type: string
+                          nullable: true
+                        file_content_type:
+                          type: string
+                          nullable: true
+                        created_at:
+                          type: string
+                        updated_at:
+                          type: string
+                      required:
+                      - id
+                      - order_id
+                      - created_at
+                      - updated_at
                     installments:
                       type: array
                       items:

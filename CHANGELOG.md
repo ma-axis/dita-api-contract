@@ -4,6 +4,12 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/). Versionament
 **major** = rota removida ou campo obrigatório mudou de forma incompatível; **minor** = rota ou
 campo novo (aditivo); **patch** = descrição/exemplo/correção sem mudar formato.
 
+## [0.4.1] - 2026-09-15
+
+Minor: `GET /companies/{company_id}/orders` (index/listagem) passa a incluir `contract` também —
+antes só o `show` de um pedido trazia isso. Necessário pra tela de pedidos mostrar/anexar o
+contrato assinado sem uma chamada extra por pedido.
+
 ## [0.4.0] - 2026-09-11
 
 Minor: anexos (Active Storage) em Contract e Installment, e rota nova de "atrasos do dia".
