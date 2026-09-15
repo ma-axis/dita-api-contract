@@ -4,6 +4,21 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/). Versionament
 **major** = rota removida ou campo obrigatório mudou de forma incompatível; **minor** = rota ou
 campo novo (aditivo); **patch** = descrição/exemplo/correção sem mudar formato.
 
+## [0.4.0] - 2026-09-11
+
+Minor: anexos (Active Storage) em Contract e Installment, e rota nova de "atrasos do dia".
+
+- Contract ganha `file_url`/`file_filename`/`file_content_type` (o PDF/imagem assinado); `content`
+  deixa de ser obrigatório (`required`) — agora é válido ter só o arquivo, sem texto digitado.
+- Installment ganha `receipt_url`/`receipt_filename`/`receipt_content_type` (comprovante de
+  pagamento).
+- Rota nova `GET /companies/{company_id}/reports/overdue_installments`: lista as parcelas
+  vencidas (pending ou overdue com due_date no passado) ordenadas por vencimento, cada uma com o
+  pedido e o cliente embutidos — alimenta a seção "Atrasos do dia" do dashboard.
+- Upload dos arquivos em si é multipart (`POST .../contract` e `PATCH .../installments/:id/pay`
+  aceitam `file`/`receipt` opcionais) e continua fora deste contrato, mesmo motivo de sempre
+  (rswag não documenta corpo multipart).
+
 ## [0.3.7] - 2026-09-10
 
 Patch: `status` de Conversation deixa de ser `nullable` — a state machine (AASM) sempre define um

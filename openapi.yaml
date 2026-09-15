@@ -660,6 +660,15 @@ paths:
                                 - paid
                                 - overdue
                                 - cancelled
+                              receipt_url:
+                                type: string
+                                nullable: true
+                              receipt_filename:
+                                type: string
+                                nullable: true
+                              receipt_content_type:
+                                type: string
+                                nullable: true
                               created_at:
                                 type: string
                               updated_at:
@@ -851,6 +860,15 @@ paths:
                                 - paid
                                 - overdue
                                 - cancelled
+                              receipt_url:
+                                type: string
+                                nullable: true
+                              receipt_filename:
+                                type: string
+                                nullable: true
+                              receipt_content_type:
+                                type: string
+                                nullable: true
                               created_at:
                                 type: string
                               updated_at:
@@ -1013,6 +1031,15 @@ paths:
                                 - paid
                                 - overdue
                                 - cancelled
+                              receipt_url:
+                                type: string
+                                nullable: true
+                              receipt_filename:
+                                type: string
+                                nullable: true
+                              receipt_content_type:
+                                type: string
+                                nullable: true
                               created_at:
                                 type: string
                               updated_at:
@@ -1174,6 +1201,15 @@ paths:
                             - paid
                             - overdue
                             - cancelled
+                          receipt_url:
+                            type: string
+                            nullable: true
+                          receipt_filename:
+                            type: string
+                            nullable: true
+                          receipt_content_type:
+                            type: string
+                            nullable: true
                           created_at:
                             type: string
                           updated_at:
@@ -1294,6 +1330,15 @@ paths:
                           - paid
                           - overdue
                           - cancelled
+                        receipt_url:
+                          type: string
+                          nullable: true
+                        receipt_filename:
+                          type: string
+                          nullable: true
+                        receipt_content_type:
+                          type: string
+                          nullable: true
                         created_at:
                           type: string
                         updated_at:
@@ -1436,7 +1481,17 @@ paths:
                         nullable: true
                       content:
                         type: string
+                        nullable: true
                       accepted_at:
+                        type: string
+                        nullable: true
+                      file_url:
+                        type: string
+                        nullable: true
+                      file_filename:
+                        type: string
+                        nullable: true
+                      file_content_type:
                         type: string
                         nullable: true
                       created_at:
@@ -1446,7 +1501,6 @@ paths:
                     required:
                     - id
                     - order_id
-                    - content
                     - created_at
                     - updated_at
                   installments:
@@ -1489,6 +1543,15 @@ paths:
                           - paid
                           - overdue
                           - cancelled
+                        receipt_url:
+                          type: string
+                          nullable: true
+                        receipt_filename:
+                          type: string
+                          nullable: true
+                        receipt_content_type:
+                          type: string
+                          nullable: true
                         created_at:
                           type: string
                         updated_at:
@@ -1552,6 +1615,111 @@ paths:
                 - overdue_installments_count
                 - paid_installments_count
                 - paid_on_time_count
+  "/api/v1/companies/{company_id}/reports/overdue_installments":
+    parameters:
+    - name: company_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: lista as parcelas atrasadas — "atrasos do dia" da tela inicial
+      tags:
+      - Reports
+      security:
+      - bearer_auth: []
+      responses:
+        '200':
+          description: parcelas vencidas (pending ou overdue) ordenadas por vencimento
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    order_id:
+                      type: integer
+                    installment_number:
+                      type: integer
+                    due_date:
+                      type: string
+                    amount:
+                      type: string
+                    interest_amount:
+                      type: string
+                      nullable: true
+                    paid_amount:
+                      type: string
+                      nullable: true
+                    paid_at:
+                      type: string
+                      nullable: true
+                    payment_method:
+                      type: string
+                      nullable: true
+                    reminders_sent_count:
+                      type: integer
+                      nullable: true
+                    last_reminder_sent_at:
+                      type: string
+                      nullable: true
+                    status:
+                      type: string
+                      enum:
+                      - pending
+                      - paid
+                      - overdue
+                      - cancelled
+                    receipt_url:
+                      type: string
+                      nullable: true
+                    receipt_filename:
+                      type: string
+                      nullable: true
+                    receipt_content_type:
+                      type: string
+                      nullable: true
+                    created_at:
+                      type: string
+                    updated_at:
+                      type: string
+                    order:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        code:
+                          type: string
+                          nullable: true
+                        customer:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                            name:
+                              type: string
+                              nullable: true
+                            phone_number:
+                              type: string
+                              nullable: true
+                          required:
+                          - id
+                      required:
+                      - id
+                      - customer
+                  required:
+                  - id
+                  - order_id
+                  - installment_number
+                  - due_date
+                  - amount
+                  - status
+                  - created_at
+                  - updated_at
+                  - order
   "/api/v1/companies/{company_id}/whatsapp/connect":
     parameters:
     - name: company_id
@@ -2063,6 +2231,15 @@ paths:
                     - paid
                     - overdue
                     - cancelled
+                  receipt_url:
+                    type: string
+                    nullable: true
+                  receipt_filename:
+                    type: string
+                    nullable: true
+                  receipt_content_type:
+                    type: string
+                    nullable: true
                   created_at:
                     type: string
                   updated_at:
@@ -2128,7 +2305,17 @@ paths:
                     nullable: true
                   content:
                     type: string
+                    nullable: true
                   accepted_at:
+                    type: string
+                    nullable: true
+                  file_url:
+                    type: string
+                    nullable: true
+                  file_filename:
+                    type: string
+                    nullable: true
+                  file_content_type:
                     type: string
                     nullable: true
                   created_at:
@@ -2138,7 +2325,6 @@ paths:
                 required:
                 - id
                 - order_id
-                - content
                 - created_at
                 - updated_at
     post:
@@ -2166,7 +2352,17 @@ paths:
                     nullable: true
                   content:
                     type: string
+                    nullable: true
                   accepted_at:
+                    type: string
+                    nullable: true
+                  file_url:
+                    type: string
+                    nullable: true
+                  file_filename:
+                    type: string
+                    nullable: true
+                  file_content_type:
                     type: string
                     nullable: true
                   created_at:
@@ -2176,7 +2372,6 @@ paths:
                 required:
                 - id
                 - order_id
-                - content
                 - created_at
                 - updated_at
       requestBody:
