@@ -4,6 +4,14 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/). Versionament
 **major** = rota removida ou campo obrigatório mudou de forma incompatível; **minor** = rota ou
 campo novo (aditivo); **patch** = descrição/exemplo/correção sem mudar formato.
 
+## [0.5.0] - 2026-09-18
+
+Minor: `Company.settings` ganha forma real — antes era `{ nullable: true }` solto (jsonb sem
+tipagem nenhuma no contrato), agora documenta `settings.features` (`ai_response`,
+`reminders_due_soon`, `collections_overdue`, todos boolean/nullable) — os três subprodutos
+ativáveis por empresa (responder automaticamente, lembrete de vencimento próximo, cobrança de
+atraso). `PATCH /companies/{id}` aceita `settings.features` no corpo.
+
 ## [0.4.1] - 2026-09-15
 
 Minor: `GET /companies/{company_id}/orders` (index/listagem) passa a incluir `contract` também —

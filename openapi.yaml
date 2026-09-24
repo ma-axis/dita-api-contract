@@ -1930,7 +1930,22 @@ paths:
                     - monthly
                     - daily
                   settings:
+                    type: object
                     nullable: true
+                    properties:
+                      features:
+                        type: object
+                        nullable: true
+                        properties:
+                          ai_response:
+                            type: boolean
+                            nullable: true
+                          reminders_due_soon:
+                            type: boolean
+                            nullable: true
+                          collections_overdue:
+                            type: boolean
+                            nullable: true
                   plan_id:
                     type: integer
                     nullable: true
@@ -1957,7 +1972,7 @@ paths:
       parameters: []
       responses:
         '200':
-          description: atualiza o nome
+          description: ativa/desativa os subprodutos (settings.features)
           content:
             application/json:
               schema:
@@ -2005,7 +2020,22 @@ paths:
                     - monthly
                     - daily
                   settings:
+                    type: object
                     nullable: true
+                    properties:
+                      features:
+                        type: object
+                        nullable: true
+                        properties:
+                          ai_response:
+                            type: boolean
+                            nullable: true
+                          reminders_due_soon:
+                            type: boolean
+                            nullable: true
+                          collections_overdue:
+                            type: boolean
+                            nullable: true
                   plan_id:
                     type: integer
                     nullable: true
@@ -2046,6 +2076,18 @@ paths:
                   enum:
                   - monthly
                   - daily
+                settings:
+                  type: object
+                  properties:
+                    features:
+                      type: object
+                      properties:
+                        ai_response:
+                          type: boolean
+                        reminders_due_soon:
+                          type: boolean
+                        collections_overdue:
+                          type: boolean
   "/api/v1/companies/{company_id}/conversations":
     parameters:
     - name: company_id
