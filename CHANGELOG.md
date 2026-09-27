@@ -4,6 +4,12 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/). Versionament
 **major** = rota removida ou campo obrigatório mudou de forma incompatível; **minor** = rota ou
 campo novo (aditivo); **patch** = descrição/exemplo/correção sem mudar formato.
 
+## [0.6.0] - 2026-09-27
+
+Minor: `Company` ganha `description` (nullable) — contexto livre da empresa usado como base pro
+prompt de sistema da IA (`GenerateResponseService`), além do nome. `PATCH /companies/{id}` aceita
+`description` no corpo.
+
 ## [0.5.0] - 2026-09-18
 
 Minor: `Company.settings` ganha forma real — antes era `{ nullable: true }` solto (jsonb sem

@@ -1920,6 +1920,9 @@ paths:
                   logo_public_id:
                     type: string
                     nullable: true
+                  description:
+                    type: string
+                    nullable: true
                   default_late_interest_rate:
                     type: string
                     nullable: true
@@ -2010,6 +2013,9 @@ paths:
                   logo_public_id:
                     type: string
                     nullable: true
+                  description:
+                    type: string
+                    nullable: true
                   default_late_interest_rate:
                     type: string
                     nullable: true
@@ -2068,6 +2074,8 @@ paths:
                 active:
                   type: boolean
                 evolution_instance_name:
+                  type: string
+                description:
                   type: string
                 default_late_interest_rate:
                   type: number
