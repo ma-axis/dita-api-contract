@@ -69,12 +69,15 @@ paths:
                         - staff
                       company_id:
                         type: integer
+                      terms_outdated:
+                        type: boolean
                     required:
                     - id
                     - name
                     - email
                     - role
                     - company_id
+                    - terms_outdated
                 required:
                 - user
         '422':
@@ -139,12 +142,15 @@ paths:
                         - staff
                       company_id:
                         type: integer
+                      terms_outdated:
+                        type: boolean
                     required:
                     - id
                     - name
                     - email
                     - role
                     - company_id
+                    - terms_outdated
                 required:
                 - user
         '422':
@@ -164,6 +170,8 @@ paths:
             schema:
               type: object
               properties:
+                accept_terms:
+                  type: boolean
                 user:
                   type: object
                   properties:
@@ -190,6 +198,7 @@ paths:
               required:
               - user
               - company
+              - accept_terms
   "/api/v1/auth/sign_in":
     post:
       summary: login
@@ -220,12 +229,15 @@ paths:
                         - staff
                       company_id:
                         type: integer
+                      terms_outdated:
+                        type: boolean
                     required:
                     - id
                     - name
                     - email
                     - role
                     - company_id
+                    - terms_outdated
                 required:
                 - user
         '401':
@@ -570,6 +582,30 @@ paths:
                   last_contact_at:
                     type: string
                     nullable: true
+                  anonymized_at:
+                    type: string
+                    nullable: true
+                  reminders_opted_out_at:
+                    type: string
+                    nullable: true
+                  conversations:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        status:
+                          type: string
+                        created_at:
+                          type: string
+                        updated_at:
+                          type: string
+                      required:
+                      - id
+                      - status
+                      - created_at
+                      - updated_at
                   orders:
                     type: array
                     items:
@@ -694,6 +730,7 @@ paths:
                 - created_at
                 - delinquent
                 - last_contact_at
+                - conversations
                 - orders
         '422':
           description: rejeita telefone duplicado na mesma empresa
@@ -770,6 +807,30 @@ paths:
                   last_contact_at:
                     type: string
                     nullable: true
+                  anonymized_at:
+                    type: string
+                    nullable: true
+                  reminders_opted_out_at:
+                    type: string
+                    nullable: true
+                  conversations:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        status:
+                          type: string
+                        created_at:
+                          type: string
+                        updated_at:
+                          type: string
+                      required:
+                      - id
+                      - status
+                      - created_at
+                      - updated_at
                   orders:
                     type: array
                     items:
@@ -894,6 +955,7 @@ paths:
                 - created_at
                 - delinquent
                 - last_contact_at
+                - conversations
                 - orders
         '404':
           description: cliente de outra empresa não é encontrado
@@ -941,6 +1003,30 @@ paths:
                   last_contact_at:
                     type: string
                     nullable: true
+                  anonymized_at:
+                    type: string
+                    nullable: true
+                  reminders_opted_out_at:
+                    type: string
+                    nullable: true
+                  conversations:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        status:
+                          type: string
+                        created_at:
+                          type: string
+                        updated_at:
+                          type: string
+                      required:
+                      - id
+                      - status
+                      - created_at
+                      - updated_at
                   orders:
                     type: array
                     items:
@@ -1065,6 +1151,7 @@ paths:
                 - created_at
                 - delinquent
                 - last_contact_at
+                - conversations
                 - orders
       requestBody:
         content:
@@ -1952,6 +2039,19 @@ paths:
                   plan_id:
                     type: integer
                     nullable: true
+                  plan:
+                    type: object
+                    nullable: true
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      monthly_message_limit:
+                        type: integer
+                  period_ends_at:
+                    type: string
+                    nullable: true
                   messages_used_current_period:
                     type: integer
                   current_period_started_at:
@@ -2044,6 +2144,19 @@ paths:
                             nullable: true
                   plan_id:
                     type: integer
+                    nullable: true
+                  plan:
+                    type: object
+                    nullable: true
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      monthly_message_limit:
+                        type: integer
+                  period_ends_at:
+                    type: string
                     nullable: true
                   messages_used_current_period:
                     type: integer
@@ -2232,6 +2345,7 @@ paths:
                           enum:
                           - user
                           - assistant
+                          - human
                         content:
                           type: string
                         created_at:

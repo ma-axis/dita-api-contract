@@ -4,6 +4,15 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/). Versionament
 **major** = rota removida ou campo obrigatório mudou de forma incompatível; **minor** = rota ou
 campo novo (aditivo); **patch** = descrição/exemplo/correção sem mudar formato.
 
+## [0.7.0] - 2026-10-11
+
+Minor: campos novos para LGPD, plano e privacidade. `POST /auth/signup` exige `accept_terms`; o usuário
+(`user`) das respostas de auth ganha `terms_outdated`; `Company` ganha `plan` e `period_ends_at`;
+`Customer` (detalhe) ganha `anonymized_at`, `reminders_opted_out_at` e `conversations`; o `role` das
+mensagens ganha o valor `human` (mensagem enviada pelo dono). Os endpoints novos (`/account`, `faq_items`,
+`requirements`, `cancel`, `take_over`, `resume_bot`, `messages`, `export`, `anonymize`, `reminders`) ainda
+não estão documentados no contrato — são consumidos por chamadas escritas à mão nos frontends.
+
 ## [0.6.0] - 2026-09-27
 
 Minor: `Company` ganha `description` (nullable) — contexto livre da empresa usado como base pro
