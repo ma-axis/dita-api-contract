@@ -4,6 +4,13 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/). Versionament
 **major** = rota removida ou campo obrigatório mudou de forma incompatível; **minor** = rota ou
 campo novo (aditivo); **patch** = descrição/exemplo/correção sem mudar formato.
 
+## [0.8.0] - 2026-10-17
+
+Minor (com remoção): `POST /auth/signup` foi removido; contas passam a ser criadas por outro painel, fora do
+Dita. Novo `POST /support_requests` (autenticado, 5 por hora por usuário) para abrir chamado de suporte;
+devolve `id` e `protocol`. `Company.settings.notifications` aceita `quota_email`, `whatsapp_disconnected_email`
+e `new_order_email`, além de `handoff_email` (que agora vale `true` por padrão quando ausente).
+
 ## [0.7.0] - 2026-10-11
 
 Minor: campos novos para LGPD, plano e privacidade. `POST /auth/signup` exige `accept_terms`; o usuário

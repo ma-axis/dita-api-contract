@@ -112,93 +112,6 @@ paths:
                   - password_confirmation
               required:
               - user
-  "/api/v1/auth/signup":
-    post:
-      summary: cria empresa e usuário juntos (signup)
-      tags:
-      - Auth
-      parameters: []
-      responses:
-        '201':
-          description: cria Company + User numa transação e já loga (JWT no header)
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  user:
-                    type: object
-                    properties:
-                      id:
-                        type: integer
-                      name:
-                        type: string
-                      email:
-                        type: string
-                      role:
-                        type: string
-                        enum:
-                        - owner
-                        - staff
-                      company_id:
-                        type: integer
-                      terms_outdated:
-                        type: boolean
-                    required:
-                    - id
-                    - name
-                    - email
-                    - role
-                    - company_id
-                    - terms_outdated
-                required:
-                - user
-        '422':
-          description: senha e confirmação não batem
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                required:
-                - error
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                accept_terms:
-                  type: boolean
-                user:
-                  type: object
-                  properties:
-                    name:
-                      type: string
-                    email:
-                      type: string
-                    password:
-                      type: string
-                    password_confirmation:
-                      type: string
-                  required:
-                  - name
-                  - email
-                  - password
-                  - password_confirmation
-                company:
-                  type: object
-                  properties:
-                    name:
-                      type: string
-                  required:
-                  - name
-              required:
-              - user
-              - company
-              - accept_terms
   "/api/v1/auth/sign_in":
     post:
       summary: login
@@ -2910,6 +2823,58 @@ paths:
       responses:
         '204':
           description: remove com sucesso
+  "/api/v1/support_requests":
+    post:
+      summary: abre um chamado de suporte
+      tags:
+      - Suporte
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: Authorization
+        in: header
+        schema:
+          type: string
+      responses:
+        '201':
+          description: grava o chamado, devolve o protocolo e envia os dois e-mails
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  protocol:
+                    type: string
+                required:
+                - id
+                - protocol
+        '422':
+          description: categoria inválida
+        '401':
+          description: sem login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                category:
+                  type: string
+                  enum:
+                  - duvida
+                  - problema
+                  - financeiro
+                  - privacidade
+                subject:
+                  type: string
+                message:
+                  type: string
+              required:
+              - category
+              - subject
+              - message
 components:
   securitySchemes:
     bearer_auth:
