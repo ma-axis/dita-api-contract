@@ -4,11 +4,19 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/). Versionament
 **major** = rota removida ou campo obrigatório mudou de forma incompatível; **minor** = rota ou
 campo novo (aditivo); **patch** = descrição/exemplo/correção sem mudar formato.
 
-## [0.14.0] - 2026-10-25
+## [0.15.0] - 2026-10-25
 
 Minor: `Company.settings.ignored_numbers` (números que o Dita não responde). Aceita número com ou sem DDI e formatação;
 a API guarda só dígitos com 55 na frente, ou o identificador `@lid`. Enviar a lista substitui a anterior; número inválido
 devolve 422.
+
+## [0.14.0] - 2026-10-24
+
+Minor: ramo do comércio. `PATCH /onboarding` aceita `business_branch` (o ramo exato escolhido no assistente, ex.: "Barbearia",
+"Hamburgueria"; fica em `onboarding.business_branch` e entra no contexto da IA). `GET /presets` devolve `branches`
+(`{ name, kit }`, com `kit: null` quando o ramo ainda não tem lista pronta) e sete kits novos (`agua_gas`, `acai`, `marmita`,
+`padaria`, `acougue`, `loja`, `personalizados`); `GET /onboarding` devolve `business_branch`. As respostas desses endpoints
+seguem sem schema no contrato (chamadas escritas à mão nos frontends).
 
 ## [0.13.0] - 2026-10-25
 
