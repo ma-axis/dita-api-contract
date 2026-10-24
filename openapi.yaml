@@ -2317,6 +2317,116 @@ paths:
                     type: string
                 required:
                 - error
+  "/api/v1/companies/{company_id}/orders/{id}/confirm_delivery":
+    parameters:
+    - name: company_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    post:
+      summary: o atendente confirma a entrega e o valor (ou muda para retirada) de
+        um pedido pré-solicitado
+      tags:
+      - Pedidos
+      security:
+      - bearer_auth: []
+      parameters: []
+      responses:
+        '200':
+          description: sem avisar o cliente quando notify é falso
+        '422':
+          description: pedido que não está aguardando entrega
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                fee:
+                  type: number
+                pickup:
+                  type: boolean
+                notify:
+                  type: boolean
+  "/api/v1/companies/{company_id}/field_sets":
+    parameters:
+    - name: company_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: lista conjuntos de campos reaproveitáveis
+      tags:
+      - Conjuntos de campos
+      security:
+      - bearer_auth: []
+      responses:
+        '200':
+          description: só os da empresa
+    post:
+      summary: cria um conjunto
+      tags:
+      - Conjuntos de campos
+      security:
+      - bearer_auth: []
+      parameters: []
+      responses:
+        '201':
+          description: cria
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+              required:
+              - name
+  "/api/v1/companies/{company_id}/field_sets/{field_set_id}/fields":
+    parameters:
+    - name: company_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    - name: field_set_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    post:
+      summary: adiciona um campo ao conjunto
+      tags:
+      - Conjuntos de campos
+      security:
+      - bearer_auth: []
+      parameters: []
+      responses:
+        '201':
+          description: cria o campo
+        '404':
+          description: conjunto de outra empresa
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                label:
+                  type: string
+                field_type:
+                  type: string
+              required:
+              - label
+              - field_type
   "/api/v1/installments/{id}/pay":
     parameters:
     - name: id
@@ -2532,6 +2642,201 @@ paths:
                   type: string
               required:
               - content
+  "/api/v1/companies/{company_id}/product_types":
+    parameters:
+    - name: company_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: lista os tipos da empresa e os modelos do sistema
+      tags:
+      - Tipos de produto
+      security:
+      - bearer_auth: []
+      responses:
+        '200':
+          description: inclui campos e marca os modelos do sistema
+    post:
+      summary: cria um tipo de produto
+      tags:
+      - Tipos de produto
+      security:
+      - bearer_auth: []
+      parameters: []
+      responses:
+        '201':
+          description: cria
+        '422':
+          description: regra de preço inválida
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                sale_mode:
+                  type: string
+                price_rule:
+                  type: object
+              required:
+              - name
+  "/api/v1/companies/{company_id}/product_types/{id}":
+    parameters:
+    - name: company_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    patch:
+      summary: atualiza
+      tags:
+      - Tipos de produto
+      security:
+      - bearer_auth: []
+      parameters: []
+      responses:
+        '200':
+          description: atualiza o nome
+        '422':
+          description: modelo do sistema não pode ser alterado
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+    delete:
+      summary: exclui só se nenhum produto usa
+      tags:
+      - Tipos de produto
+      security:
+      - bearer_auth: []
+      responses:
+        '204':
+          description: exclui
+        '422':
+          description: tem produtos usando
+        '404':
+          description: tipo de outra empresa
+  "/api/v1/companies/{company_id}/product_types/{id}/duplicate":
+    parameters:
+    - name: company_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    post:
+      summary: duplica um modelo do sistema para personalizar
+      tags:
+      - Tipos de produto
+      security:
+      - bearer_auth: []
+      responses:
+        '201':
+          description: copia o tipo e os campos para a empresa
+  "/api/v1/companies/{company_id}/product_types/{product_type_id}/fields":
+    parameters:
+    - name: company_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    - name: product_type_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    post:
+      summary: adiciona um campo ao tipo
+      tags:
+      - Tipos de produto
+      security:
+      - bearer_auth: []
+      parameters: []
+      responses:
+        '201':
+          description: cria o campo com as opções normalizadas
+        '422':
+          description: modelo do sistema não pode ser alterado
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                label:
+                  type: string
+                field_type:
+                  type: string
+                required:
+                  type: boolean
+                config:
+                  type: object
+              required:
+              - label
+              - field_type
+  "/api/v1/companies/{company_id}/product_types/{product_type_id}/fields/{id}":
+    parameters:
+    - name: company_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    - name: product_type_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    patch:
+      summary: atualiza o campo
+      tags:
+      - Tipos de produto
+      security:
+      - bearer_auth: []
+      parameters: []
+      responses:
+        '200':
+          description: atualiza
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                required:
+                  type: boolean
+                config:
+                  type: object
+    delete:
+      summary: remove o campo
+      tags:
+      - Tipos de produto
+      security:
+      - bearer_auth: []
+      responses:
+        '204':
+          description: remove
   "/api/v1/companies/{company_id}/products":
     parameters:
     - name: company_id
@@ -2855,6 +3160,220 @@ paths:
       responses:
         '204':
           description: remove com sucesso
+  "/api/v1/companies/{company_id}/presets":
+    parameters:
+    - name: company_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: lista kits, perguntas, listas e cidades prontas
+      tags:
+      - Kits
+      security:
+      - bearer_auth: []
+      responses:
+        '200':
+          description: devolve os três kits e coloca primeiro as perguntas do ramo
+  "/api/v1/companies/{company_id}/presets/kits/{kit}":
+    parameters:
+    - name: company_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    - name: kit
+      in: path
+      required: true
+      schema:
+        type: string
+    post:
+      summary: 'aplica um kit: cria tipos, produtos em rascunho e perguntas frequentes'
+      tags:
+      - Kits
+      security:
+      - bearer_auth: []
+      responses:
+        '201':
+          description: copia o kit para a empresa e devolve o checklist
+        '404':
+          description: kit inexistente
+  "/api/v1/companies/{company_id}/presets/questions/{question}":
+    parameters:
+    - name: company_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    - name: question
+      in: path
+      required: true
+      schema:
+        type: string
+    post:
+      summary: adiciona uma pergunta pronta a um tipo de produto
+      tags:
+      - Kits
+      security:
+      - bearer_auth: []
+      parameters: []
+      responses:
+        '201':
+          description: copia os campos
+        '404':
+          description: tipo de outra empresa ou modelo do sistema
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                product_type_id:
+                  type: integer
+              required:
+              - product_type_id
+  "/api/v1/companies/{company_id}/onboarding":
+    parameters:
+    - name: company_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: o que falta para o Dita estar pronto
+      tags:
+      - Kits
+      security:
+      - bearer_auth: []
+      responses:
+        '200':
+          description: checklist
+    patch:
+      summary: guarda o ramo e a cidade escolhidos no assistente
+      tags:
+      - Kits
+      security:
+      - bearer_auth: []
+      parameters: []
+      responses:
+        '200':
+          description: salva
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                business_template:
+                  type: string
+                city:
+                  type: string
+                wizard_done:
+                  type: boolean
+  "/api/v1/companies/{company_id}/imports":
+    parameters:
+    - name: company_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    post:
+      summary: lê uma lista colada e propõe os itens para revisar, sem gravar nada
+      tags:
+      - Importação
+      security:
+      - bearer_auth: []
+      parameters: []
+      responses:
+        '200':
+          description: proposta
+        '422':
+          description: lista vazia
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                text:
+                  type: string
+              required:
+              - text
+  "/api/v1/companies/{company_id}/imports/commit":
+    parameters:
+    - name: company_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    post:
+      summary: grava os itens revisados
+      tags:
+      - Importação
+      security:
+      - bearer_auth: []
+      parameters: []
+      responses:
+        '201':
+          description: cria os produtos
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                rows:
+                  type: array
+                  items:
+                    type: object
+              required:
+              - rows
+  "/api/v1/companies/{company_id}/simulator/messages":
+    parameters:
+    - name: company_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    post:
+      summary: conversa com o atendimento do Dita sem enviar nada ao WhatsApp
+      tags:
+      - Simulador
+      security:
+      - bearer_auth: []
+      parameters: []
+      responses:
+        '200':
+          description: devolve as mensagens, o carrinho e as pendências
+        '422':
+          description: mensagem vazia
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+              required:
+              - content
+  "/api/v1/companies/{company_id}/simulator":
+    parameters:
+    - name: company_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    delete:
+      summary: recomeça a conversa de teste
+      tags:
+      - Simulador
+      security:
+      - bearer_auth: []
+      responses:
+        '200':
+          description: apaga a conversa do simulador
   "/api/v1/support_requests":
     post:
       summary: abre um chamado de suporte

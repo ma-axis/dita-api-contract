@@ -4,6 +4,24 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/). Versionament
 **major** = rota removida ou campo obrigatório mudou de forma incompatível; **minor** = rota ou
 campo novo (aditivo); **patch** = descrição/exemplo/correção sem mudar formato.
 
+## [0.11.0] - 2026-10-25
+
+Minor: "pronto em minutos". Novos endpoints de kits (`/presets`, `/presets/kits/{kit}`, `/presets/questions/{question}`,
+`/presets/neighborhoods`), onboarding (`/onboarding`), importação de lista (`/imports`, `/imports/commit`) e de produto
+(`/products/{id}/duplicate`, `/products/bulk`). `Product` ganha `status` (`active`/`draft`), `source` e `sold_out_until`
+("acabou hoje"); `Company` ganha `business_template` e `city`. Os endpoints novos ainda são consumidos por chamadas
+escritas à mão nos frontends. Também: `POST /orders/{id}/confirm_delivery` (o atendente confirma a entrega e o valor, ou passa
+para retirada, de um pedido pré-solicitado) e `Conversation.pending_delivery_order`.
+
+## [0.10.0] - 2026-10-25
+
+Minor: motor de vendas. Novos endpoints de tipos de produto (`/companies/{id}/product_types`, `/fields`,
+`/duplicate`), conjuntos de campos (`/field_sets`) e simulador (`/simulator`, `/simulator/messages`).
+`Product` ganha `product_type_id`, `unit`, `aliases`, `stock_quantity`, `extra_field_set_ids` e
+`specifications`; o detalhe do produto devolve `product_type` com os campos. `Order` ganha `order_items` e
+`checkout`; `Company` ganha `checkout_settings` e o recurso `sales_engine` em `settings.features`.
+Os endpoints novos ainda são consumidos por chamadas escritas à mão nos frontends.
+
 ## [0.9.0] - 2026-10-24
 
 Minor: novo `DELETE /conversations/{id}` — exclui a conversa do Dita com as mensagens e os orçamentos que não
