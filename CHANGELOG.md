@@ -10,6 +10,12 @@ Minor: `Company.settings.ignored_numbers` (números que o Dita não responde). A
 a API guarda só dígitos com 55 na frente, ou o identificador `@lid`. Enviar a lista substitui a anterior; número inválido
 devolve 422.
 
+## [0.15.0] - 2026-10-25
+
+Minor: estoque reservado e texto do cliente identificado. `Order` ganha `stock_applied_at` (o estoque é baixado no primeiro
+pagamento confirmado e devolvido se o pedido for cancelado); o detalhe do produto devolve `reserved_quantity`. O detalhe
+do cliente ganha `name_from_whatsapp`, e o cliente dentro da conversa e do pedido ganha `whatsapp_lid`.
+
 ## [0.14.0] - 2026-10-24
 
 Minor: ramo do comércio. `PATCH /onboarding` aceita `business_branch` (o ramo exato escolhido no assistente, ex.: "Barbearia",

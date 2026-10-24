@@ -501,6 +501,10 @@ paths:
                   reminders_opted_out_at:
                     type: string
                     nullable: true
+                  name_from_whatsapp:
+                    type: boolean
+                    description: O nome veio do WhatsApp (escolhido pelo cliente)
+                      e o dono ainda não editou
                   conversations:
                     type: array
                     items:
@@ -565,6 +569,11 @@ paths:
                         notes:
                           type: string
                           nullable: true
+                        stock_applied_at:
+                          type: string
+                          nullable: true
+                          description: Quando o estoque foi baixado (no primeiro pagamento
+                            confirmado)
                         created_at:
                           type: string
                         updated_at:
@@ -726,6 +735,10 @@ paths:
                   reminders_opted_out_at:
                     type: string
                     nullable: true
+                  name_from_whatsapp:
+                    type: boolean
+                    description: O nome veio do WhatsApp (escolhido pelo cliente)
+                      e o dono ainda não editou
                   conversations:
                     type: array
                     items:
@@ -790,6 +803,11 @@ paths:
                         notes:
                           type: string
                           nullable: true
+                        stock_applied_at:
+                          type: string
+                          nullable: true
+                          description: Quando o estoque foi baixado (no primeiro pagamento
+                            confirmado)
                         created_at:
                           type: string
                         updated_at:
@@ -922,6 +940,10 @@ paths:
                   reminders_opted_out_at:
                     type: string
                     nullable: true
+                  name_from_whatsapp:
+                    type: boolean
+                    description: O nome veio do WhatsApp (escolhido pelo cliente)
+                      e o dono ainda não editou
                   conversations:
                     type: array
                     items:
@@ -986,6 +1008,11 @@ paths:
                         notes:
                           type: string
                           nullable: true
+                        stock_applied_at:
+                          type: string
+                          nullable: true
+                          description: Quando o estoque foi baixado (no primeiro pagamento
+                            confirmado)
                         created_at:
                           type: string
                         updated_at:
@@ -1144,6 +1171,11 @@ paths:
                     notes:
                       type: string
                       nullable: true
+                    stock_applied_at:
+                      type: string
+                      nullable: true
+                      description: Quando o estoque foi baixado (no primeiro pagamento
+                        confirmado)
                     created_at:
                       type: string
                     updated_at:
@@ -1159,6 +1191,11 @@ paths:
                         phone_number:
                           type: string
                           nullable: true
+                        whatsapp_lid:
+                          type: string
+                          nullable: true
+                          description: Identificador do WhatsApp quando o cliente
+                            não mostra o número
                       required:
                       - id
                     contract:
@@ -1321,6 +1358,11 @@ paths:
                   notes:
                     type: string
                     nullable: true
+                  stock_applied_at:
+                    type: string
+                    nullable: true
+                    description: Quando o estoque foi baixado (no primeiro pagamento
+                      confirmado)
                   created_at:
                     type: string
                   updated_at:
@@ -1486,6 +1528,11 @@ paths:
                   notes:
                     type: string
                     nullable: true
+                  stock_applied_at:
+                    type: string
+                    nullable: true
+                    description: Quando o estoque foi baixado (no primeiro pagamento
+                      confirmado)
                   created_at:
                     type: string
                   updated_at:
@@ -1501,6 +1548,11 @@ paths:
                       phone_number:
                         type: string
                         nullable: true
+                      whatsapp_lid:
+                        type: string
+                        nullable: true
+                        description: Identificador do WhatsApp quando o cliente não
+                          mostra o número
                     required:
                     - id
                   contract:
@@ -1740,6 +1792,11 @@ paths:
                             phone_number:
                               type: string
                               nullable: true
+                            whatsapp_lid:
+                              type: string
+                              nullable: true
+                              description: Identificador do WhatsApp quando o cliente
+                                não mostra o número
                           required:
                           - id
                       required:
@@ -2198,6 +2255,11 @@ paths:
                         phone_number:
                           type: string
                           nullable: true
+                        whatsapp_lid:
+                          type: string
+                          nullable: true
+                          description: Identificador do WhatsApp quando o cliente
+                            não mostra o número
                       required:
                       - id
                   required:
@@ -2262,6 +2324,11 @@ paths:
                       phone_number:
                         type: string
                         nullable: true
+                      whatsapp_lid:
+                        type: string
+                        nullable: true
+                        description: Identificador do WhatsApp quando o cliente não
+                          mostra o número
                     required:
                     - id
                   messages:
@@ -3081,6 +3148,9 @@ paths:
                       - product_id
                       - created_at
                       - updated_at
+                  reserved_quantity:
+                    type: string
+                    description: Quantidade reservada em pedidos ainda não pagos
                 required:
                 - id
                 - created_at
