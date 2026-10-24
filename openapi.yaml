@@ -3253,6 +3253,8 @@ paths:
               properties:
                 business_template:
                   type: string
+                business_branch:
+                  type: string
                 city:
                   type: string
                 wizard_done:
