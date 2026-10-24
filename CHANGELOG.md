@@ -4,6 +4,12 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/). Versionament
 **major** = rota removida ou campo obrigatório mudou de forma incompatível; **minor** = rota ou
 campo novo (aditivo); **patch** = descrição/exemplo/correção sem mudar formato.
 
+## [0.13.0] - 2026-10-25
+
+Removido: `Product.ai_instructions` ("Instruções para a IA") saiu da resposta e do corpo de criar e atualizar produto. O que o
+Dita pergunta ao cliente fica nas perguntas do produto (motor de pedidos) ou nos requisitos; informação extra vai em
+`long_desc`. Nenhum app consome o campo pelo cliente gerado.
+
 ## [0.12.0] - 2026-10-25
 
 Minor: perguntas do produto genéricas. Novo `POST /products/{id}/own_questions` (separa as perguntas para o produto,

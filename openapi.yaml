@@ -2880,9 +2880,6 @@ paths:
                     active:
                       type: boolean
                       nullable: true
-                    ai_instructions:
-                      type: string
-                      nullable: true
                     image_url:
                       type: string
                       nullable: true
@@ -2936,9 +2933,6 @@ paths:
                   active:
                     type: boolean
                     nullable: true
-                  ai_instructions:
-                    type: string
-                    nullable: true
                   image_url:
                     type: string
                     nullable: true
@@ -2974,8 +2968,6 @@ paths:
                   type: string
                 active:
                   type: boolean
-                ai_instructions:
-                  type: string
               required:
               - name
               - price
@@ -3023,9 +3015,6 @@ paths:
                     nullable: true
                   active:
                     type: boolean
-                    nullable: true
-                  ai_instructions:
-                    type: string
                     nullable: true
                   image_url:
                     type: string
@@ -3112,9 +3101,6 @@ paths:
                   active:
                     type: boolean
                     nullable: true
-                  ai_instructions:
-                    type: string
-                    nullable: true
                   image_url:
                     type: string
                     nullable: true
@@ -3150,8 +3136,6 @@ paths:
                   type: string
                 active:
                   type: boolean
-                ai_instructions:
-                  type: string
     delete:
       summary: remove produto
       tags:
@@ -3377,9 +3361,6 @@ paths:
                   active:
                     type: boolean
                     nullable: true
-                  ai_instructions:
-                    type: string
-                    nullable: true
                   image_url:
                     type: string
                     nullable: true
@@ -3453,9 +3434,6 @@ paths:
                       nullable: true
                     active:
                       type: boolean
-                      nullable: true
-                    ai_instructions:
-                      type: string
                       nullable: true
                     image_url:
                       type: string
