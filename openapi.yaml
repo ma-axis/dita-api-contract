@@ -2285,6 +2285,38 @@ paths:
                     type: string
                 required:
                 - error
+    delete:
+      summary: exclui a conversa do Dita (mensagens e orçamentos sem pedido); não
+        mexe no WhatsApp nem no cliente
+      tags:
+      - Conversations
+      security:
+      - bearer_auth: []
+      responses:
+        '204':
+          description: conversa, mensagens e orçamentos sem pedido apagados
+        '422':
+          description: conversa que gerou pedido não pode ser excluída
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '404':
+          description: conversa de outra empresa não é encontrada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
   "/api/v1/installments/{id}/pay":
     parameters:
     - name: id

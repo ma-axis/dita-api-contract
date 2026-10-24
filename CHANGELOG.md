@@ -4,6 +4,12 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/). Versionament
 **major** = rota removida ou campo obrigatório mudou de forma incompatível; **minor** = rota ou
 campo novo (aditivo); **patch** = descrição/exemplo/correção sem mudar formato.
 
+## [0.9.0] - 2026-10-24
+
+Minor: novo `DELETE /conversations/{id}` — exclui a conversa do Dita com as mensagens e os orçamentos que não
+viraram pedido (204). Conversa que gerou pedido não pode ser excluída (422 com `error`). Não afeta o WhatsApp
+nem o cadastro do cliente.
+
 ## [0.8.0] - 2026-10-17
 
 Minor (com remoção): `POST /auth/signup` foi removido; contas passam a ser criadas por outro painel, fora do
