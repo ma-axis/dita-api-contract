@@ -2657,7 +2657,8 @@ paths:
       - bearer_auth: []
       responses:
         '200':
-          description: inclui campos e marca os modelos do sistema
+          description: só os tipos da empresa, sem modelos com nome de produto de
+            outro ramo
     post:
       summary: cria um tipo de produto
       tags:
@@ -2742,14 +2743,14 @@ paths:
       schema:
         type: integer
     post:
-      summary: duplica um modelo do sistema para personalizar
+      summary: duplica um tipo da empresa para criar outro parecido
       tags:
       - Tipos de produto
       security:
       - bearer_auth: []
       responses:
         '201':
-          description: copia o tipo e os campos para a empresa
+          description: copia o tipo e os campos
   "/api/v1/companies/{company_id}/product_types/{product_type_id}/fields":
     parameters:
     - name: company_id
@@ -3175,7 +3176,8 @@ paths:
       - bearer_auth: []
       responses:
         '200':
-          description: devolve os três kits e coloca primeiro as perguntas do ramo
+          description: devolve os kits e só as perguntas e listas que servem ao ramo
+            da empresa
   "/api/v1/companies/{company_id}/presets/kits/{kit}":
     parameters:
     - name: company_id
@@ -3329,6 +3331,228 @@ paths:
                     type: object
               required:
               - rows
+  "/api/v1/companies/{company_id}/products/{id}/duplicate":
+    parameters:
+    - name: company_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    post:
+      summary: duplica um produto com outro nome e preço
+      tags:
+      - Products
+      security:
+      - bearer_auth: []
+      parameters: []
+      responses:
+        '201':
+          description: cria a cópia sem foto
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  company_id:
+                    type: integer
+                  name:
+                    type: string
+                    nullable: true
+                  short_desc:
+                    type: string
+                    nullable: true
+                  long_desc:
+                    type: string
+                    nullable: true
+                  price:
+                    type: string
+                    nullable: true
+                  active:
+                    type: boolean
+                    nullable: true
+                  ai_instructions:
+                    type: string
+                    nullable: true
+                  image_url:
+                    type: string
+                    nullable: true
+                  image_public_id:
+                    type: string
+                    nullable: true
+                  contract_template_id:
+                    type: integer
+                    nullable: true
+                  metadata:
+                    nullable: true
+                  created_at:
+                    type: string
+                  updated_at:
+                    type: string
+                required:
+                - id
+                - created_at
+                - updated_at
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                price:
+                  type: number
+              required:
+              - name
+  "/api/v1/companies/{company_id}/products/bulk":
+    parameters:
+    - name: company_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    patch:
+      summary: altera vários produtos de uma vez
+      tags:
+      - Products
+      security:
+      - bearer_auth: []
+      parameters: []
+      responses:
+        '200':
+          description: aplica preço, publicação e "acabou hoje"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    company_id:
+                      type: integer
+                    name:
+                      type: string
+                      nullable: true
+                    short_desc:
+                      type: string
+                      nullable: true
+                    long_desc:
+                      type: string
+                      nullable: true
+                    price:
+                      type: string
+                      nullable: true
+                    active:
+                      type: boolean
+                      nullable: true
+                    ai_instructions:
+                      type: string
+                      nullable: true
+                    image_url:
+                      type: string
+                      nullable: true
+                    image_public_id:
+                      type: string
+                      nullable: true
+                    contract_template_id:
+                      type: integer
+                      nullable: true
+                    metadata:
+                      nullable: true
+                    created_at:
+                      type: string
+                    updated_at:
+                      type: string
+                  required:
+                  - id
+                  - created_at
+                  - updated_at
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                items:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      unit:
+                        type: string
+                      price:
+                        type: number
+                      sold_out:
+                        type: boolean
+                      publish:
+                        type: boolean
+                      active:
+                        type: boolean
+                    required:
+                    - id
+              required:
+              - items
+  "/api/v1/companies/{company_id}/products/{id}/own_questions":
+    parameters:
+    - name: company_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    post:
+      summary: separa as perguntas para este produto
+      tags:
+      - Products
+      security:
+      - bearer_auth: []
+      responses:
+        '200':
+          description: devolve as perguntas do produto, criando um conjunto só dele
+            quando necessário
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  system:
+                    type: boolean
+                  shared_count:
+                    type: integer
+                  shared_with:
+                    type: array
+                    items:
+                      type: string
+                  fields:
+                    type: array
+                    items:
+                      type: object
+                required:
+                - id
+                - name
+                - shared_count
+                - fields
   "/api/v1/companies/{company_id}/simulator/messages":
     parameters:
     - name: company_id

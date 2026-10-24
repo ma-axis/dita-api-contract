@@ -4,6 +4,14 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/). Versionament
 **major** = rota removida ou campo obrigatório mudou de forma incompatível; **minor** = rota ou
 campo novo (aditivo); **patch** = descrição/exemplo/correção sem mudar formato.
 
+## [0.12.0] - 2026-10-25
+
+Minor: perguntas do produto genéricas. Novo `POST /products/{id}/own_questions` (separa as perguntas para o produto,
+criando um conjunto só dele quando estavam compartilhadas) e documentação de `POST /products/{id}/duplicate` e
+`PATCH /products/bulk`, que já existiam desde a 0.11.0 sem estar no contrato. O tipo de produto no detalhe do produto ganha
+`shared_with` e `shared_count`. Os modelos globais (Pizza, Bebida com sabor etc.) deixaram de existir: `system` continua no
+formato, mas vem sempre `false`. `/presets` devolve só as perguntas e listas que servem ao ramo da empresa.
+
 ## [0.11.0] - 2026-10-25
 
 Minor: "pronto em minutos". Novos endpoints de kits (`/presets`, `/presets/kits/{kit}`, `/presets/questions/{question}`,
