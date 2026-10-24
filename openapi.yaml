@@ -1949,6 +1949,11 @@ paths:
                           collections_overdue:
                             type: boolean
                             nullable: true
+                      ignored_numbers:
+                        type: array
+                        items:
+                          type: string
+                        nullable: true
                   plan_id:
                     type: integer
                     nullable: true
@@ -1988,7 +1993,7 @@ paths:
       parameters: []
       responses:
         '200':
-          description: ativa/desativa os subprodutos (settings.features)
+          description: esvazia a lista de números ignorados
           content:
             application/json:
               schema:
@@ -2055,6 +2060,11 @@ paths:
                           collections_overdue:
                             type: boolean
                             nullable: true
+                      ignored_numbers:
+                        type: array
+                        items:
+                          type: string
+                        nullable: true
                   plan_id:
                     type: integer
                     nullable: true
@@ -2085,6 +2095,8 @@ paths:
                 - whatsapp_status
                 - created_at
                 - updated_at
+        '422':
+          description: recusa número inválido na lista
       requestBody:
         content:
           application/json:
@@ -2122,6 +2134,12 @@ paths:
                           type: boolean
                         collections_overdue:
                           type: boolean
+                    ignored_numbers:
+                      type: array
+                      items:
+                        type: string
+                      description: Números que o Dita não responde (substitui a lista
+                        inteira)
   "/api/v1/companies/{company_id}/conversations":
     parameters:
     - name: company_id

@@ -4,6 +4,12 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/). Versionament
 **major** = rota removida ou campo obrigatório mudou de forma incompatível; **minor** = rota ou
 campo novo (aditivo); **patch** = descrição/exemplo/correção sem mudar formato.
 
+## [0.14.0] - 2026-10-25
+
+Minor: `Company.settings.ignored_numbers` (números que o Dita não responde). Aceita número com ou sem DDI e formatação;
+a API guarda só dígitos com 55 na frente, ou o identificador `@lid`. Enviar a lista substitui a anterior; número inválido
+devolve 422.
+
 ## [0.13.0] - 2026-10-25
 
 Removido: `Product.ai_instructions` ("Instruções para a IA") saiu da resposta e do corpo de criar e atualizar produto. O que o
