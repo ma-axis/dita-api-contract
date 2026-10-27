@@ -4,6 +4,12 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/). Versionament
 **major** = rota removida ou campo obrigatório mudou de forma incompatível; **minor** = rota ou
 campo novo (aditivo); **patch** = descrição/exemplo/correção sem mudar formato.
 
+## [0.17.0] - 2026-10-27
+
+Minor: pedidos de teste do simulador. `Order` ganha `simulated` (pedido feito no simulador do painel; fica fora de "A receber",
+relatórios, estoque, cobrança e avisos ao dono). `GET /companies/{id}/orders` passa a listar só os pedidos reais; com
+`simulated=true`, lista só os de teste.
+
 ## [0.16.0] - 2026-10-27
 
 Minor: base do app mobile. Novos `GET /companies/{id}/summary` (contagens do Início e dos selos: conversas esperando,

@@ -574,6 +574,10 @@ paths:
                           nullable: true
                           description: Quando o estoque foi baixado (no primeiro pagamento
                             confirmado)
+                        simulated:
+                          type: boolean
+                          description: Pedido de teste feito no simulador (fora de
+                            finanças, estoque e cobrança)
                         created_at:
                           type: string
                         updated_at:
@@ -643,6 +647,7 @@ paths:
                       required:
                       - id
                       - status
+                      - simulated
                       - created_at
                       - updated_at
                       - installments
@@ -808,6 +813,10 @@ paths:
                           nullable: true
                           description: Quando o estoque foi baixado (no primeiro pagamento
                             confirmado)
+                        simulated:
+                          type: boolean
+                          description: Pedido de teste feito no simulador (fora de
+                            finanças, estoque e cobrança)
                         created_at:
                           type: string
                         updated_at:
@@ -877,6 +886,7 @@ paths:
                       required:
                       - id
                       - status
+                      - simulated
                       - created_at
                       - updated_at
                       - installments
@@ -1013,6 +1023,10 @@ paths:
                           nullable: true
                           description: Quando o estoque foi baixado (no primeiro pagamento
                             confirmado)
+                        simulated:
+                          type: boolean
+                          description: Pedido de teste feito no simulador (fora de
+                            finanças, estoque e cobrança)
                         created_at:
                           type: string
                         updated_at:
@@ -1082,6 +1096,7 @@ paths:
                       required:
                       - id
                       - status
+                      - simulated
                       - created_at
                       - updated_at
                       - installments
@@ -1120,6 +1135,14 @@ paths:
       - Orders
       security:
       - bearer_auth: []
+      parameters:
+      - name: simulated
+        in: query
+        required: false
+        description: true lista só os pedidos de teste do simulador; sem o parâmetro,
+          só os reais
+        schema:
+          type: boolean
       responses:
         '200':
           description: sucesso
@@ -1176,6 +1199,10 @@ paths:
                       nullable: true
                       description: Quando o estoque foi baixado (no primeiro pagamento
                         confirmado)
+                    simulated:
+                      type: boolean
+                      description: Pedido de teste feito no simulador (fora de finanças,
+                        estoque e cobrança)
                     created_at:
                       type: string
                     updated_at:
@@ -1298,6 +1325,7 @@ paths:
                   required:
                   - id
                   - status
+                  - simulated
                   - created_at
                   - updated_at
                   - customer
@@ -1363,6 +1391,10 @@ paths:
                     nullable: true
                     description: Quando o estoque foi baixado (no primeiro pagamento
                       confirmado)
+                  simulated:
+                    type: boolean
+                    description: Pedido de teste feito no simulador (fora de finanças,
+                      estoque e cobrança)
                   created_at:
                     type: string
                   updated_at:
@@ -1432,6 +1464,7 @@ paths:
                 required:
                 - id
                 - status
+                - simulated
                 - created_at
                 - updated_at
                 - installments
@@ -1533,6 +1566,10 @@ paths:
                     nullable: true
                     description: Quando o estoque foi baixado (no primeiro pagamento
                       confirmado)
+                  simulated:
+                    type: boolean
+                    description: Pedido de teste feito no simulador (fora de finanças,
+                      estoque e cobrança)
                   created_at:
                     type: string
                   updated_at:
@@ -1655,6 +1692,7 @@ paths:
                 required:
                 - id
                 - status
+                - simulated
                 - created_at
                 - updated_at
                 - customer
@@ -3833,7 +3871,8 @@ paths:
       parameters: []
       responses:
         '200':
-          description: devolve as mensagens, o carrinho e as pendências
+          description: grava a mensagem e agenda a resposta; waiting fica verdadeiro
+            até o Dita responder
         '422':
           description: mensagem vazia
       requestBody:
