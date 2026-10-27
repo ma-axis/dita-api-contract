@@ -1812,6 +1812,41 @@ paths:
                   - created_at
                   - updated_at
                   - order
+  "/api/v1/companies/{company_id}/summary":
+    parameters:
+    - name: company_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: contagens do Início e dos selos das abas do app
+      tags:
+      - Reports
+      security:
+      - bearer_auth: []
+      responses:
+        '200':
+          description: conversas esperando, entregas a confirmar, atrasos de hoje
+            e rascunhos
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  conversations_waiting:
+                    type: integer
+                  deliveries_to_confirm:
+                    type: integer
+                  overdue_today:
+                    type: integer
+                  drafts:
+                    type: integer
+                required:
+                - conversations_waiting
+                - deliveries_to_confirm
+                - overdue_today
+                - drafts
   "/api/v1/companies/{company_id}/whatsapp/connect":
     parameters:
     - name: company_id
@@ -2011,6 +2046,42 @@ paths:
                         items:
                           type: string
                         nullable: true
+                      quick_replies:
+                        type: array
+                        items:
+                          type: string
+                        nullable: true
+                      notifications:
+                        type: object
+                        nullable: true
+                        properties:
+                          handoff_email:
+                            type: boolean
+                            nullable: true
+                          quota_email:
+                            type: boolean
+                            nullable: true
+                          whatsapp_disconnected_email:
+                            type: boolean
+                            nullable: true
+                          new_order_email:
+                            type: boolean
+                            nullable: true
+                          media_email:
+                            type: boolean
+                            nullable: true
+                          handoff_push:
+                            type: boolean
+                            nullable: true
+                          new_order_push:
+                            type: boolean
+                            nullable: true
+                          media_push:
+                            type: boolean
+                            nullable: true
+                          whatsapp_disconnected_push:
+                            type: boolean
+                            nullable: true
                   plan_id:
                     type: integer
                     nullable: true
@@ -2024,6 +2095,12 @@ paths:
                         type: string
                       monthly_message_limit:
                         type: integer
+                  quick_replies:
+                    type: array
+                    items:
+                      type: string
+                    description: Respostas rápidas do atendimento (padrão da loja
+                      quando o dono nunca editou)
                   period_ends_at:
                     type: string
                     nullable: true
@@ -2050,7 +2127,7 @@ paths:
       parameters: []
       responses:
         '200':
-          description: esvazia a lista de números ignorados
+          description: liga e desliga os avisos no celular
           content:
             application/json:
               schema:
@@ -2122,6 +2199,42 @@ paths:
                         items:
                           type: string
                         nullable: true
+                      quick_replies:
+                        type: array
+                        items:
+                          type: string
+                        nullable: true
+                      notifications:
+                        type: object
+                        nullable: true
+                        properties:
+                          handoff_email:
+                            type: boolean
+                            nullable: true
+                          quota_email:
+                            type: boolean
+                            nullable: true
+                          whatsapp_disconnected_email:
+                            type: boolean
+                            nullable: true
+                          new_order_email:
+                            type: boolean
+                            nullable: true
+                          media_email:
+                            type: boolean
+                            nullable: true
+                          handoff_push:
+                            type: boolean
+                            nullable: true
+                          new_order_push:
+                            type: boolean
+                            nullable: true
+                          media_push:
+                            type: boolean
+                            nullable: true
+                          whatsapp_disconnected_push:
+                            type: boolean
+                            nullable: true
                   plan_id:
                     type: integer
                     nullable: true
@@ -2135,6 +2248,12 @@ paths:
                         type: string
                       monthly_message_limit:
                         type: integer
+                  quick_replies:
+                    type: array
+                    items:
+                      type: string
+                    description: Respostas rápidas do atendimento (padrão da loja
+                      quando o dono nunca editou)
                   period_ends_at:
                     type: string
                     nullable: true
@@ -2197,6 +2316,23 @@ paths:
                         type: string
                       description: Números que o Dita não responde (substitui a lista
                         inteira)
+                    quick_replies:
+                      type: array
+                      items:
+                        type: string
+                      description: Respostas rápidas do atendimento, até 10 (substitui
+                        a lista inteira)
+                    notifications:
+                      type: object
+                      properties:
+                        handoff_push:
+                          type: boolean
+                        new_order_push:
+                          type: boolean
+                        media_push:
+                          type: boolean
+                        whatsapp_disconnected_push:
+                          type: boolean
   "/api/v1/companies/{company_id}/conversations":
     parameters:
     - name: company_id
@@ -2439,6 +2575,66 @@ paths:
                   type: boolean
                 notify:
                   type: boolean
+  "/api/v1/account/devices":
+    post:
+      summary: registra o aparelho para receber avisos no celular
+      tags:
+      - Account
+      security:
+      - bearer_auth: []
+      parameters: []
+      responses:
+        '201':
+          description: o mesmo aparelho passa para o usuário que entrou por último
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  token:
+                    type: string
+                  platform:
+                    type: string
+                required:
+                - id
+                - token
+                - platform
+        '422':
+          description: recusa token que não é do Expo
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                platform:
+                  type: string
+                  enum:
+                  - android
+                  - ios
+              required:
+              - token
+  "/api/v1/account/devices/{token}":
+    parameters:
+    - name: token
+      in: path
+      description: Token do Expo, codificado para URL
+      required: true
+      schema:
+        type: string
+    delete:
+      summary: remove o aparelho do usuário logado
+      tags:
+      - Account
+      security:
+      - bearer_auth: []
+      responses:
+        '204':
+          description: apaga só o token do próprio usuário
   "/api/v1/companies/{company_id}/field_sets":
     parameters:
     - name: company_id

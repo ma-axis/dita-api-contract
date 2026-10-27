@@ -4,6 +4,14 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/). Versionament
 **major** = rota removida ou campo obrigatório mudou de forma incompatível; **minor** = rota ou
 campo novo (aditivo); **patch** = descrição/exemplo/correção sem mudar formato.
 
+## [0.16.0] - 2026-10-27
+
+Minor: base do app mobile. Novos `GET /companies/{id}/summary` (contagens do Início e dos selos: conversas esperando,
+entregas a confirmar, atrasos de hoje, rascunhos), `POST /account/devices` e `DELETE /account/devices/{token}` (aparelho
+que recebe avisos no celular, token do Expo codificado na URL). `Company` ganha `quick_replies` (respostas rápidas, padrão da
+loja até o dono editar) e `settings.quick_replies`; `settings.notifications` ganha `handoff_push`, `new_order_push`,
+`media_push` e `whatsapp_disconnected_push` (avisos no celular, ligados por padrão).
+
 ## [0.15.0] - 2026-10-25
 
 Minor: `Company.settings.ignored_numbers` (números que o Dita não responde). Aceita número com ou sem DDI e formatação;
