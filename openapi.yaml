@@ -2092,14 +2092,16 @@ paths:
       schema:
         type: integer
     post:
-      summary: inicia conexão (QR code)
+      summary: inicia conexão (QR code ou código de pareamento)
       tags:
       - Whatsapp
       security:
       - bearer_auth: []
+      parameters: []
       responses:
         '200':
-          description: devolve o QR code e o status atual
+          description: devolve o QR code, o código de pareamento (quando enviou o
+            número) e o status atual
           content:
             application/json:
               schema:
@@ -2122,6 +2124,11 @@ paths:
                     required:
                     - base64
                     - code
+                  pairing_code:
+                    type: string
+                    nullable: true
+                    description: Código de 8 letras para digitar no WhatsApp em Aparelhos
+                      conectados
                 required:
                 - whatsapp_status
         '502':
@@ -2135,6 +2142,16 @@ paths:
                     type: string
                 required:
                 - error
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                number:
+                  type: string
+                  description: Número do WhatsApp do negócio, com DDD. Com ele a resposta
+                    traz pairing_code
   "/api/v1/companies/{company_id}/whatsapp/status":
     parameters:
     - name: company_id

@@ -4,6 +4,12 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/). Versionament
 **major** = rota removida ou campo obrigatório mudou de forma incompatível; **minor** = rota ou
 campo novo (aditivo); **patch** = descrição/exemplo/correção sem mudar formato.
 
+## [0.19.0] - 2026-10-28
+
+Minor: conectar o WhatsApp pelo código de pareamento. `POST /companies/{id}/whatsapp/connect` aceita `number` (WhatsApp do
+negócio, com DDD) e a resposta ganha `pairing_code` (8 letras para digitar no WhatsApp em Aparelhos conectados → Conectar
+com número de telefone). Sem `number`, continua só o QR.
+
 ## [0.18.0] - 2026-10-27
 
 Minor: Novidades do Painel de Controle. Novos `GET /companies/{id}/novidades?placement=` (placements `web.dashboard`,
