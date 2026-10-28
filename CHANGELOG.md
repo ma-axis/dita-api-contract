@@ -4,6 +4,13 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/). Versionament
 **major** = rota removida ou campo obrigatório mudou de forma incompatível; **minor** = rota ou
 campo novo (aditivo); **patch** = descrição/exemplo/correção sem mudar formato.
 
+## [0.18.0] - 2026-10-27
+
+Minor: Novidades do Painel de Controle. Novos `GET /companies/{id}/novidades?placement=` (placements `web.dashboard`,
+`web.novidades`, `mobile.home`, `mobile.novidades`; repassa o feed do painel com cache de 5 min e responde lista vazia se ele
+falhar) e `POST /companies/{id}/novidades/events` (impressões e cliques, `202`). Schema `Novidade` segue o contrato do feed
+(`painel-controle-server/docs/feed-openapi.yaml`): campos e `kind` desconhecidos devem ser ignorados.
+
 ## [0.17.0] - 2026-10-27
 
 Minor: pedidos de teste do simulador. `Order` ganha `simulated` (pedido feito no simulador do painel; fica fora de "A receber",

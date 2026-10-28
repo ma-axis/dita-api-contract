@@ -1122,6 +1122,205 @@ paths:
                   type: string
                 document:
                   type: string
+  "/api/v1/companies/{company_id}/novidades":
+    parameters:
+    - name: company_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    - name: placement
+      in: query
+      required: true
+      schema:
+        type: string
+        enum:
+        - web.dashboard
+        - web.novidades
+        - mobile.home
+        - mobile.novidades
+      description: web.dashboard (bloco do início no web), web.novidades (tela do
+        web), mobile.home e mobile.novidades (app)
+    get:
+      summary: novidades publicadas no Painel de Controle para um placement
+      tags:
+      - Novidades
+      security:
+      - bearer_auth: []
+      description: Repassa o feed do painel com cache de 5 min. Painel fora ou lento
+        devolve a cópia antiga ou lista vazia, sempre 200. tier e tipo de conta saem
+        da empresa no servidor.
+      responses:
+        '200':
+          description: anúncios do placement, na ordem do painel
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      description: 'Anúncio publicado no Painel de Controle (contrato:
+                        painel-controle-server/docs/feed-openapi.yaml). Campos e kinds
+                        desconhecidos devem ser ignorados.'
+                      properties:
+                        id:
+                          type: string
+                        slug:
+                          type: string
+                        kind:
+                          type: string
+                          description: SYSTEM_PROMO, PHYSICAL_PRODUCT ou GENERAL
+                        title:
+                          type: string
+                        subtitle:
+                          type: string
+                          nullable: true
+                        bodyMd:
+                          type: string
+                          nullable: true
+                          description: 'Markdown restrito: **negrito**, *itálico*,
+                            [link](https://...), parágrafos'
+                        image:
+                          type: object
+                          nullable: true
+                          properties:
+                            url:
+                              type: string
+                            alt:
+                              type: string
+                              nullable: true
+                          required:
+                          - url
+                        cta:
+                          type: object
+                          nullable: true
+                          properties:
+                            label:
+                              type: string
+                            url:
+                              type: string
+                          required:
+                          - label
+                          - url
+                        product:
+                          type: object
+                          nullable: true
+                          properties:
+                            key:
+                              type: string
+                            name:
+                              type: string
+                            priceFromCents:
+                              type: integer
+                              nullable: true
+                          required:
+                          - key
+                          - name
+                        promotedSystem:
+                          type: object
+                          nullable: true
+                          properties:
+                            key:
+                              type: string
+                            name:
+                              type: string
+                          required:
+                          - key
+                          - name
+                        priority:
+                          type: integer
+                        startsAt:
+                          type: string
+                          nullable: true
+                        endsAt:
+                          type: string
+                          nullable: true
+                        updatedAt:
+                          type: string
+                        version:
+                          type: integer
+                      required:
+                      - id
+                      - slug
+                      - kind
+                      - title
+                  placement:
+                    type: string
+                  generatedAt:
+                    type: string
+                  ttlSeconds:
+                    type: integer
+                required:
+                - data
+                - placement
+        '400':
+          description: placement que não é do Dita
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '401':
+          description: sem login
+  "/api/v1/companies/{company_id}/novidades/events":
+    parameters:
+    - name: company_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    post:
+      summary: registra impressões e cliques das Novidades
+      tags:
+      - Novidades
+      security:
+      - bearer_auth: []
+      description: Cada evento soma 1. O servidor agrega e envia ao painel em lote
+        a cada minuto; evento inválido é ignorado.
+      parameters: []
+      responses:
+        '202':
+          description: eventos aceitos
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                events:
+                  type: array
+                  maxItems: 100
+                  items:
+                    type: object
+                    properties:
+                      announcementId:
+                        type: string
+                        format: uuid
+                      placement:
+                        type: string
+                        enum:
+                        - web.dashboard
+                        - web.novidades
+                        - mobile.home
+                        - mobile.novidades
+                      type:
+                        type: string
+                        enum:
+                        - IMPRESSION
+                        - CLICK
+                    required:
+                    - announcementId
+                    - placement
+                    - type
+              required:
+              - events
   "/api/v1/companies/{company_id}/orders":
     parameters:
     - name: company_id
