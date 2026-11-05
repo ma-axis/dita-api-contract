@@ -407,26 +407,24 @@ paths:
     parameters:
     - name: company_id
       in: path
-      description: ID da empresa
       required: true
       schema:
         type: integer
     get:
-      summary: lista clientes
+      summary: filtra clientes por etiqueta
       tags:
-      - Customers
+      - Clientes
       security:
       - bearer_auth: []
       parameters:
-      - name: q
+      - name: tag
         in: query
         required: false
-        description: Filtra por nome, telefone, e-mail ou documento
         schema:
           type: string
       responses:
         '200':
-          description: filtra pela busca (q)
+          description: só os clientes com a etiqueta
           content:
             application/json:
               schema:
@@ -461,15 +459,15 @@ paths:
                   - delinquent
                   - last_contact_at
     post:
-      summary: cria cliente
+      summary: guarda etiquetas, sem repetir nem passar do limite
       tags:
-      - Customers
+      - Clientes
       security:
       - bearer_auth: []
       parameters: []
       responses:
         '201':
-          description: cria só com o nome (único campo obrigatório)
+          description: normalizadas
           content:
             application/json:
               schema:
@@ -574,6 +572,31 @@ paths:
                           nullable: true
                           description: Quando o estoque foi baixado (no primeiro pagamento
                             confirmado)
+                        pricing_status:
+                          type: string
+                          nullable: true
+                          enum:
+                          - awaiting_quote
+                          - quoted
+                          - accepted
+                          - declined
+                          - expired
+                          description: Só existe em pedido com item sob orçamento;
+                            nulo é pedido normal
+                        recurring_charge_id:
+                          type: integer
+                          nullable: true
+                          description: Preenchido quando o pedido foi gerado por uma
+                            cobrança recorrente
+                        period_start:
+                          type: string
+                          nullable: true
+                        quoted_at:
+                          type: string
+                          nullable: true
+                        quote_expires_at:
+                          type: string
+                          nullable: true
                         simulated:
                           type: boolean
                           description: Pedido de teste feito no simulador (fora de
@@ -660,7 +683,7 @@ paths:
                 - conversations
                 - orders
         '422':
-          description: rejeita telefone duplicado na mesma empresa
+          description: etiquetas demais
           content:
             application/json:
               schema:
@@ -680,12 +703,10 @@ paths:
                   type: string
                 phone_number:
                   type: string
-                email:
-                  type: string
-                document:
-                  type: string
-              required:
-              - name
+                tags:
+                  type: array
+                  items:
+                    type: string
   "/api/v1/companies/{company_id}/customers/{id}":
     parameters:
     - name: company_id
@@ -813,6 +834,31 @@ paths:
                           nullable: true
                           description: Quando o estoque foi baixado (no primeiro pagamento
                             confirmado)
+                        pricing_status:
+                          type: string
+                          nullable: true
+                          enum:
+                          - awaiting_quote
+                          - quoted
+                          - accepted
+                          - declined
+                          - expired
+                          description: Só existe em pedido com item sob orçamento;
+                            nulo é pedido normal
+                        recurring_charge_id:
+                          type: integer
+                          nullable: true
+                          description: Preenchido quando o pedido foi gerado por uma
+                            cobrança recorrente
+                        period_start:
+                          type: string
+                          nullable: true
+                        quoted_at:
+                          type: string
+                          nullable: true
+                        quote_expires_at:
+                          type: string
+                          nullable: true
                         simulated:
                           type: boolean
                           description: Pedido de teste feito no simulador (fora de
@@ -1023,6 +1069,31 @@ paths:
                           nullable: true
                           description: Quando o estoque foi baixado (no primeiro pagamento
                             confirmado)
+                        pricing_status:
+                          type: string
+                          nullable: true
+                          enum:
+                          - awaiting_quote
+                          - quoted
+                          - accepted
+                          - declined
+                          - expired
+                          description: Só existe em pedido com item sob orçamento;
+                            nulo é pedido normal
+                        recurring_charge_id:
+                          type: integer
+                          nullable: true
+                          description: Preenchido quando o pedido foi gerado por uma
+                            cobrança recorrente
+                        period_start:
+                          type: string
+                          nullable: true
+                        quoted_at:
+                          type: string
+                          nullable: true
+                        quote_expires_at:
+                          type: string
+                          nullable: true
                         simulated:
                           type: boolean
                           description: Pedido de teste feito no simulador (fora de
@@ -1398,6 +1469,31 @@ paths:
                       nullable: true
                       description: Quando o estoque foi baixado (no primeiro pagamento
                         confirmado)
+                    pricing_status:
+                      type: string
+                      nullable: true
+                      enum:
+                      - awaiting_quote
+                      - quoted
+                      - accepted
+                      - declined
+                      - expired
+                      description: Só existe em pedido com item sob orçamento; nulo
+                        é pedido normal
+                    recurring_charge_id:
+                      type: integer
+                      nullable: true
+                      description: Preenchido quando o pedido foi gerado por uma cobrança
+                        recorrente
+                    period_start:
+                      type: string
+                      nullable: true
+                    quoted_at:
+                      type: string
+                      nullable: true
+                    quote_expires_at:
+                      type: string
+                      nullable: true
                     simulated:
                       type: boolean
                       description: Pedido de teste feito no simulador (fora de finanças,
@@ -1590,6 +1686,31 @@ paths:
                     nullable: true
                     description: Quando o estoque foi baixado (no primeiro pagamento
                       confirmado)
+                  pricing_status:
+                    type: string
+                    nullable: true
+                    enum:
+                    - awaiting_quote
+                    - quoted
+                    - accepted
+                    - declined
+                    - expired
+                    description: Só existe em pedido com item sob orçamento; nulo
+                      é pedido normal
+                  recurring_charge_id:
+                    type: integer
+                    nullable: true
+                    description: Preenchido quando o pedido foi gerado por uma cobrança
+                      recorrente
+                  period_start:
+                    type: string
+                    nullable: true
+                  quoted_at:
+                    type: string
+                    nullable: true
+                  quote_expires_at:
+                    type: string
+                    nullable: true
                   simulated:
                     type: boolean
                     description: Pedido de teste feito no simulador (fora de finanças,
@@ -1765,6 +1886,31 @@ paths:
                     nullable: true
                     description: Quando o estoque foi baixado (no primeiro pagamento
                       confirmado)
+                  pricing_status:
+                    type: string
+                    nullable: true
+                    enum:
+                    - awaiting_quote
+                    - quoted
+                    - accepted
+                    - declined
+                    - expired
+                    description: Só existe em pedido com item sob orçamento; nulo
+                      é pedido normal
+                  recurring_charge_id:
+                    type: integer
+                    nullable: true
+                    description: Preenchido quando o pedido foi gerado por uma cobrança
+                      recorrente
+                  period_start:
+                    type: string
+                    nullable: true
+                  quoted_at:
+                    type: string
+                    nullable: true
+                  quote_expires_at:
+                    type: string
+                    nullable: true
                   simulated:
                     type: boolean
                     description: Pedido de teste feito no simulador (fora de finanças,
@@ -1896,6 +2042,1502 @@ paths:
                 - updated_at
                 - customer
                 - installments
+  "/api/v1/companies/{company_id}/recurring_charges":
+    parameters:
+    - name: company_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: lista as cobranças recorrentes
+      tags:
+      - Cobranças recorrentes
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: customer_id
+        in: query
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: lista
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    company_id:
+                      type: integer
+                    customer_id:
+                      type: integer
+                    product_id:
+                      type: integer
+                      nullable: true
+                    contract_template_id:
+                      type: integer
+                      nullable: true
+                    description:
+                      type: string
+                    amount:
+                      type: string
+                    interval:
+                      type: string
+                      enum:
+                      - monthly
+                    day_of_month:
+                      type: integer
+                      description: 1 a 28, ou 0 para o último dia do mês
+                    starts_on:
+                      type: string
+                    ends_on:
+                      type: string
+                      nullable: true
+                    occurrences_limit:
+                      type: integer
+                      nullable: true
+                    lead_days:
+                      type: integer
+                      description: Quantos dias antes do vencimento o pedido do mês
+                        é gerado
+                    notify_on_generate:
+                      type: boolean
+                    status:
+                      type: string
+                      enum:
+                      - active
+                      - paused
+                      - ended
+                    next_due_on:
+                      type: string
+                    generated_count:
+                      type: integer
+                    customer:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                          nullable: true
+                        phone_number:
+                          type: string
+                          nullable: true
+                        whatsapp_lid:
+                          type: string
+                          nullable: true
+                          description: Identificador do WhatsApp quando o cliente
+                            não mostra o número
+                      required:
+                      - id
+                    created_at:
+                      type: string
+                    updated_at:
+                      type: string
+                  required:
+                  - id
+                  - customer_id
+                  - description
+                  - amount
+                  - day_of_month
+                  - starts_on
+                  - lead_days
+                  - notify_on_generate
+                  - status
+                  - next_due_on
+                  - generated_count
+    post:
+      summary: cria uma cobrança recorrente
+      tags:
+      - Cobranças recorrentes
+      security:
+      - bearer_auth: []
+      parameters: []
+      responses:
+        '201':
+          description: criada com o primeiro vencimento calculado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  company_id:
+                    type: integer
+                  customer_id:
+                    type: integer
+                  product_id:
+                    type: integer
+                    nullable: true
+                  contract_template_id:
+                    type: integer
+                    nullable: true
+                  description:
+                    type: string
+                  amount:
+                    type: string
+                  interval:
+                    type: string
+                    enum:
+                    - monthly
+                  day_of_month:
+                    type: integer
+                    description: 1 a 28, ou 0 para o último dia do mês
+                  starts_on:
+                    type: string
+                  ends_on:
+                    type: string
+                    nullable: true
+                  occurrences_limit:
+                    type: integer
+                    nullable: true
+                  lead_days:
+                    type: integer
+                    description: Quantos dias antes do vencimento o pedido do mês
+                      é gerado
+                  notify_on_generate:
+                    type: boolean
+                  status:
+                    type: string
+                    enum:
+                    - active
+                    - paused
+                    - ended
+                  next_due_on:
+                    type: string
+                  generated_count:
+                    type: integer
+                  customer:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                        nullable: true
+                      phone_number:
+                        type: string
+                        nullable: true
+                      whatsapp_lid:
+                        type: string
+                        nullable: true
+                        description: Identificador do WhatsApp quando o cliente não
+                          mostra o número
+                    required:
+                    - id
+                  created_at:
+                    type: string
+                  updated_at:
+                    type: string
+                required:
+                - id
+                - customer_id
+                - description
+                - amount
+                - day_of_month
+                - starts_on
+                - lead_days
+                - notify_on_generate
+                - status
+                - next_due_on
+                - generated_count
+        '422':
+          description: valor inválido
+        '404':
+          description: cliente de outra empresa
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                customer_id:
+                  type: integer
+                description:
+                  type: string
+                amount:
+                  type: number
+                day_of_month:
+                  type: integer
+                starts_on:
+                  type: string
+                ends_on:
+                  type: string
+                occurrences_limit:
+                  type: integer
+                lead_days:
+                  type: integer
+                notify_on_generate:
+                  type: boolean
+                product_id:
+                  type: integer
+              required:
+              - customer_id
+              - description
+              - amount
+              - day_of_month
+              - starts_on
+  "/api/v1/companies/{company_id}/recurring_charges/{id}":
+    parameters:
+    - name: company_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: mostra uma cobrança
+      tags:
+      - Cobranças recorrentes
+      security:
+      - bearer_auth: []
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  company_id:
+                    type: integer
+                  customer_id:
+                    type: integer
+                  product_id:
+                    type: integer
+                    nullable: true
+                  contract_template_id:
+                    type: integer
+                    nullable: true
+                  description:
+                    type: string
+                  amount:
+                    type: string
+                  interval:
+                    type: string
+                    enum:
+                    - monthly
+                  day_of_month:
+                    type: integer
+                    description: 1 a 28, ou 0 para o último dia do mês
+                  starts_on:
+                    type: string
+                  ends_on:
+                    type: string
+                    nullable: true
+                  occurrences_limit:
+                    type: integer
+                    nullable: true
+                  lead_days:
+                    type: integer
+                    description: Quantos dias antes do vencimento o pedido do mês
+                      é gerado
+                  notify_on_generate:
+                    type: boolean
+                  status:
+                    type: string
+                    enum:
+                    - active
+                    - paused
+                    - ended
+                  next_due_on:
+                    type: string
+                  generated_count:
+                    type: integer
+                  customer:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                        nullable: true
+                      phone_number:
+                        type: string
+                        nullable: true
+                      whatsapp_lid:
+                        type: string
+                        nullable: true
+                        description: Identificador do WhatsApp quando o cliente não
+                          mostra o número
+                    required:
+                    - id
+                  created_at:
+                    type: string
+                  updated_at:
+                    type: string
+                required:
+                - id
+                - customer_id
+                - description
+                - amount
+                - day_of_month
+                - starts_on
+                - lead_days
+                - notify_on_generate
+                - status
+                - next_due_on
+                - generated_count
+    patch:
+      summary: muda valor, dia ou aviso para as próximas gerações
+      tags:
+      - Cobranças recorrentes
+      security:
+      - bearer_auth: []
+      parameters: []
+      responses:
+        '200':
+          description: atualizada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  company_id:
+                    type: integer
+                  customer_id:
+                    type: integer
+                  product_id:
+                    type: integer
+                    nullable: true
+                  contract_template_id:
+                    type: integer
+                    nullable: true
+                  description:
+                    type: string
+                  amount:
+                    type: string
+                  interval:
+                    type: string
+                    enum:
+                    - monthly
+                  day_of_month:
+                    type: integer
+                    description: 1 a 28, ou 0 para o último dia do mês
+                  starts_on:
+                    type: string
+                  ends_on:
+                    type: string
+                    nullable: true
+                  occurrences_limit:
+                    type: integer
+                    nullable: true
+                  lead_days:
+                    type: integer
+                    description: Quantos dias antes do vencimento o pedido do mês
+                      é gerado
+                  notify_on_generate:
+                    type: boolean
+                  status:
+                    type: string
+                    enum:
+                    - active
+                    - paused
+                    - ended
+                  next_due_on:
+                    type: string
+                  generated_count:
+                    type: integer
+                  customer:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                        nullable: true
+                      phone_number:
+                        type: string
+                        nullable: true
+                      whatsapp_lid:
+                        type: string
+                        nullable: true
+                        description: Identificador do WhatsApp quando o cliente não
+                          mostra o número
+                    required:
+                    - id
+                  created_at:
+                    type: string
+                  updated_at:
+                    type: string
+                required:
+                - id
+                - customer_id
+                - description
+                - amount
+                - day_of_month
+                - starts_on
+                - lead_days
+                - notify_on_generate
+                - status
+                - next_due_on
+                - generated_count
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                amount:
+                  type: number
+                notify_on_generate:
+                  type: boolean
+  "/api/v1/companies/{company_id}/recurring_charges/{id}/pause":
+    parameters:
+    - name: company_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    post:
+      summary: muda a situação para paused
+      tags:
+      - Cobranças recorrentes
+      security:
+      - bearer_auth: []
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  company_id:
+                    type: integer
+                  customer_id:
+                    type: integer
+                  product_id:
+                    type: integer
+                    nullable: true
+                  contract_template_id:
+                    type: integer
+                    nullable: true
+                  description:
+                    type: string
+                  amount:
+                    type: string
+                  interval:
+                    type: string
+                    enum:
+                    - monthly
+                  day_of_month:
+                    type: integer
+                    description: 1 a 28, ou 0 para o último dia do mês
+                  starts_on:
+                    type: string
+                  ends_on:
+                    type: string
+                    nullable: true
+                  occurrences_limit:
+                    type: integer
+                    nullable: true
+                  lead_days:
+                    type: integer
+                    description: Quantos dias antes do vencimento o pedido do mês
+                      é gerado
+                  notify_on_generate:
+                    type: boolean
+                  status:
+                    type: string
+                    enum:
+                    - active
+                    - paused
+                    - ended
+                  next_due_on:
+                    type: string
+                  generated_count:
+                    type: integer
+                  customer:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                        nullable: true
+                      phone_number:
+                        type: string
+                        nullable: true
+                      whatsapp_lid:
+                        type: string
+                        nullable: true
+                        description: Identificador do WhatsApp quando o cliente não
+                          mostra o número
+                    required:
+                    - id
+                  created_at:
+                    type: string
+                  updated_at:
+                    type: string
+                required:
+                - id
+                - customer_id
+                - description
+                - amount
+                - day_of_month
+                - starts_on
+                - lead_days
+                - notify_on_generate
+                - status
+                - next_due_on
+                - generated_count
+  "/api/v1/companies/{company_id}/recurring_charges/{id}/end":
+    parameters:
+    - name: company_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    post:
+      summary: muda a situação para ended
+      tags:
+      - Cobranças recorrentes
+      security:
+      - bearer_auth: []
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  company_id:
+                    type: integer
+                  customer_id:
+                    type: integer
+                  product_id:
+                    type: integer
+                    nullable: true
+                  contract_template_id:
+                    type: integer
+                    nullable: true
+                  description:
+                    type: string
+                  amount:
+                    type: string
+                  interval:
+                    type: string
+                    enum:
+                    - monthly
+                  day_of_month:
+                    type: integer
+                    description: 1 a 28, ou 0 para o último dia do mês
+                  starts_on:
+                    type: string
+                  ends_on:
+                    type: string
+                    nullable: true
+                  occurrences_limit:
+                    type: integer
+                    nullable: true
+                  lead_days:
+                    type: integer
+                    description: Quantos dias antes do vencimento o pedido do mês
+                      é gerado
+                  notify_on_generate:
+                    type: boolean
+                  status:
+                    type: string
+                    enum:
+                    - active
+                    - paused
+                    - ended
+                  next_due_on:
+                    type: string
+                  generated_count:
+                    type: integer
+                  customer:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                        nullable: true
+                      phone_number:
+                        type: string
+                        nullable: true
+                      whatsapp_lid:
+                        type: string
+                        nullable: true
+                        description: Identificador do WhatsApp quando o cliente não
+                          mostra o número
+                    required:
+                    - id
+                  created_at:
+                    type: string
+                  updated_at:
+                    type: string
+                required:
+                - id
+                - customer_id
+                - description
+                - amount
+                - day_of_month
+                - starts_on
+                - lead_days
+                - notify_on_generate
+                - status
+                - next_due_on
+                - generated_count
+  "/api/v1/companies/{company_id}/recurring_charges/{id}/resume":
+    parameters:
+    - name: company_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    post:
+      summary: retoma uma cobrança pausada
+      tags:
+      - Cobranças recorrentes
+      security:
+      - bearer_auth: []
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  company_id:
+                    type: integer
+                  customer_id:
+                    type: integer
+                  product_id:
+                    type: integer
+                    nullable: true
+                  contract_template_id:
+                    type: integer
+                    nullable: true
+                  description:
+                    type: string
+                  amount:
+                    type: string
+                  interval:
+                    type: string
+                    enum:
+                    - monthly
+                  day_of_month:
+                    type: integer
+                    description: 1 a 28, ou 0 para o último dia do mês
+                  starts_on:
+                    type: string
+                  ends_on:
+                    type: string
+                    nullable: true
+                  occurrences_limit:
+                    type: integer
+                    nullable: true
+                  lead_days:
+                    type: integer
+                    description: Quantos dias antes do vencimento o pedido do mês
+                      é gerado
+                  notify_on_generate:
+                    type: boolean
+                  status:
+                    type: string
+                    enum:
+                    - active
+                    - paused
+                    - ended
+                  next_due_on:
+                    type: string
+                  generated_count:
+                    type: integer
+                  customer:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                        nullable: true
+                      phone_number:
+                        type: string
+                        nullable: true
+                      whatsapp_lid:
+                        type: string
+                        nullable: true
+                        description: Identificador do WhatsApp quando o cliente não
+                          mostra o número
+                    required:
+                    - id
+                  created_at:
+                    type: string
+                  updated_at:
+                    type: string
+                required:
+                - id
+                - customer_id
+                - description
+                - amount
+                - day_of_month
+                - starts_on
+                - lead_days
+                - notify_on_generate
+                - status
+                - next_due_on
+                - generated_count
+  "/api/v1/companies/{company_id}/recurring_charges/{id}/skip_next":
+    parameters:
+    - name: company_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    post:
+      summary: pula o próximo mês sem gerar
+      tags:
+      - Cobranças recorrentes
+      security:
+      - bearer_auth: []
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  company_id:
+                    type: integer
+                  customer_id:
+                    type: integer
+                  product_id:
+                    type: integer
+                    nullable: true
+                  contract_template_id:
+                    type: integer
+                    nullable: true
+                  description:
+                    type: string
+                  amount:
+                    type: string
+                  interval:
+                    type: string
+                    enum:
+                    - monthly
+                  day_of_month:
+                    type: integer
+                    description: 1 a 28, ou 0 para o último dia do mês
+                  starts_on:
+                    type: string
+                  ends_on:
+                    type: string
+                    nullable: true
+                  occurrences_limit:
+                    type: integer
+                    nullable: true
+                  lead_days:
+                    type: integer
+                    description: Quantos dias antes do vencimento o pedido do mês
+                      é gerado
+                  notify_on_generate:
+                    type: boolean
+                  status:
+                    type: string
+                    enum:
+                    - active
+                    - paused
+                    - ended
+                  next_due_on:
+                    type: string
+                  generated_count:
+                    type: integer
+                  customer:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                        nullable: true
+                      phone_number:
+                        type: string
+                        nullable: true
+                      whatsapp_lid:
+                        type: string
+                        nullable: true
+                        description: Identificador do WhatsApp quando o cliente não
+                          mostra o número
+                    required:
+                    - id
+                  created_at:
+                    type: string
+                  updated_at:
+                    type: string
+                required:
+                - id
+                - customer_id
+                - description
+                - amount
+                - day_of_month
+                - starts_on
+                - lead_days
+                - notify_on_generate
+                - status
+                - next_due_on
+                - generated_count
+        '422':
+          description: cobrança pausada
+  "/api/v1/companies/{company_id}/reminder_presets":
+    parameters:
+    - name: company_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: catálogo de lembretes prontos
+      tags:
+      - Lembretes
+      security:
+      - bearer_auth: []
+      responses:
+        '200':
+          description: lista
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    key:
+                      type: string
+                    category:
+                      type: string
+                    name:
+                      type: string
+                    message:
+                      type: string
+                    schedule:
+                      type: object
+                    ack_words:
+                      type: array
+                      items:
+                        type: string
+  "/api/v1/companies/{company_id}/reminder_templates":
+    parameters:
+    - name: company_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: lista os modelos de lembrete da empresa
+      tags:
+      - Lembretes
+      security:
+      - bearer_auth: []
+      responses:
+        '200':
+          description: lista com a quantidade de clientes ativos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    company_id:
+                      type: integer
+                    category:
+                      type: string
+                      enum:
+                      - tax
+                      - renewal
+                      - appointment
+                      - custom
+                    name:
+                      type: string
+                    message:
+                      type: string
+                      description: 'Variáveis aceitas: {nome}, {empresa}, {mes}, {dia}'
+                    schedule:
+                      type: object
+                      description: 'type: monthly_days (days), monthly_day (day),
+                        yearly_date (month, day) ou every_n_days (n); time em HH:MM
+                        (Brasília)'
+                      properties:
+                        type:
+                          type: string
+                        days:
+                          type: array
+                          items:
+                            type: integer
+                        day:
+                          type: integer
+                        month:
+                          type: integer
+                        "n":
+                          type: integer
+                        time:
+                          type: string
+                    ack_words:
+                      type: array
+                      items:
+                        type: string
+                    stop_after_ack:
+                      type: boolean
+                    preset_key:
+                      type: string
+                      nullable: true
+                    active:
+                      type: boolean
+                    active_customers:
+                      type: integer
+                      description: Só na listagem
+                    created_at:
+                      type: string
+                    updated_at:
+                      type: string
+                  required:
+                  - id
+                  - name
+                  - message
+                  - schedule
+                  - category
+                  - active
+    post:
+      summary: cria um modelo do zero ou a partir de um pronto
+      tags:
+      - Lembretes
+      security:
+      - bearer_auth: []
+      parameters: []
+      responses:
+        '201':
+          description: criado de um pronto
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  company_id:
+                    type: integer
+                  category:
+                    type: string
+                    enum:
+                    - tax
+                    - renewal
+                    - appointment
+                    - custom
+                  name:
+                    type: string
+                  message:
+                    type: string
+                    description: 'Variáveis aceitas: {nome}, {empresa}, {mes}, {dia}'
+                  schedule:
+                    type: object
+                    description: 'type: monthly_days (days), monthly_day (day), yearly_date
+                      (month, day) ou every_n_days (n); time em HH:MM (Brasília)'
+                    properties:
+                      type:
+                        type: string
+                      days:
+                        type: array
+                        items:
+                          type: integer
+                      day:
+                        type: integer
+                      month:
+                        type: integer
+                      "n":
+                        type: integer
+                      time:
+                        type: string
+                  ack_words:
+                    type: array
+                    items:
+                      type: string
+                  stop_after_ack:
+                    type: boolean
+                  preset_key:
+                    type: string
+                    nullable: true
+                  active:
+                    type: boolean
+                  active_customers:
+                    type: integer
+                    description: Só na listagem
+                  created_at:
+                    type: string
+                  updated_at:
+                    type: string
+                required:
+                - id
+                - name
+                - message
+                - schedule
+                - category
+                - active
+        '422':
+          description: agenda inválida
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                preset_key:
+                  type: string
+                name:
+                  type: string
+                category:
+                  type: string
+                message:
+                  type: string
+                schedule:
+                  type: object
+                ack_words:
+                  type: array
+                  items:
+                    type: string
+  "/api/v1/companies/{company_id}/reminder_templates/{id}":
+    parameters:
+    - name: company_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    patch:
+      summary: edita um modelo
+      tags:
+      - Lembretes
+      security:
+      - bearer_auth: []
+      parameters: []
+      responses:
+        '200':
+          description: atualizado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  company_id:
+                    type: integer
+                  category:
+                    type: string
+                    enum:
+                    - tax
+                    - renewal
+                    - appointment
+                    - custom
+                  name:
+                    type: string
+                  message:
+                    type: string
+                    description: 'Variáveis aceitas: {nome}, {empresa}, {mes}, {dia}'
+                  schedule:
+                    type: object
+                    description: 'type: monthly_days (days), monthly_day (day), yearly_date
+                      (month, day) ou every_n_days (n); time em HH:MM (Brasília)'
+                    properties:
+                      type:
+                        type: string
+                      days:
+                        type: array
+                        items:
+                          type: integer
+                      day:
+                        type: integer
+                      month:
+                        type: integer
+                      "n":
+                        type: integer
+                      time:
+                        type: string
+                  ack_words:
+                    type: array
+                    items:
+                      type: string
+                  stop_after_ack:
+                    type: boolean
+                  preset_key:
+                    type: string
+                    nullable: true
+                  active:
+                    type: boolean
+                  active_customers:
+                    type: integer
+                    description: Só na listagem
+                  created_at:
+                    type: string
+                  updated_at:
+                    type: string
+                required:
+                - id
+                - name
+                - message
+                - schedule
+                - category
+                - active
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                active:
+                  type: boolean
+    delete:
+      summary: apaga um modelo e os lembretes dos clientes
+      tags:
+      - Lembretes
+      security:
+      - bearer_auth: []
+      responses:
+        '204':
+          description: apagado
+  "/api/v1/companies/{company_id}/reminder_templates/{id}/activate":
+    parameters:
+    - name: company_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    post:
+      summary: ativa o lembrete para clientes ou para uma etiqueta
+      tags:
+      - Lembretes
+      security:
+      - bearer_auth: []
+      parameters: []
+      responses:
+        '200':
+          description: sem aceite confirmado e sem conversa, pula o cliente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  activated:
+                    type: integer
+                  skipped:
+                    type: object
+                    additionalProperties:
+                      type: integer
+                required:
+                - activated
+                - skipped
+        '422':
+          description: sem clientes nem etiqueta
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                customer_ids:
+                  type: array
+                  items:
+                    type: integer
+                tag:
+                  type: string
+                starts_on:
+                  type: string
+                consent_confirmed:
+                  type: boolean
+  "/api/v1/companies/{company_id}/reminder_templates/{id}/report":
+    parameters:
+    - name: company_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: 'relatório do ciclo: quem confirmou, quem não respondeu'
+      tags:
+      - Lembretes
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: cycle
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: por cliente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  template_id:
+                    type: integer
+                  name:
+                    type: string
+                  cycle:
+                    type: string
+                  totals:
+                    type: object
+                    additionalProperties:
+                      type: integer
+                  customers:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        customer_id:
+                          type: integer
+                        name:
+                          type: string
+                        status:
+                          type: string
+                          enum:
+                          - confirmed
+                          - no_reply
+                          - pending
+                          - skipped
+                          - not_scheduled
+                        sent_at:
+                          type: string
+                          nullable: true
+                        skip_reason:
+                          type: string
+                          nullable: true
+  "/api/v1/companies/{company_id}/customer_reminders/{id}":
+    parameters:
+    - name: company_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    patch:
+      summary: pausa, retoma ou muda as datas do lembrete de um cliente
+      tags:
+      - Lembretes
+      security:
+      - bearer_auth: []
+      parameters: []
+      responses:
+        '200':
+          description: atualizado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  customer_id:
+                    type: integer
+                  reminder_template_id:
+                    type: integer
+                  schedule_override:
+                    type: object
+                    nullable: true
+                  starts_on:
+                    type: string
+                  ends_on:
+                    type: string
+                    nullable: true
+                  paused_until:
+                    type: string
+                    nullable: true
+                  active:
+                    type: boolean
+                  consent_confirmed:
+                    type: boolean
+                  opted_out_at:
+                    type: string
+                    nullable: true
+                  last_sent_at:
+                    type: string
+                    nullable: true
+                  template:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      category:
+                        type: string
+                      message:
+                        type: string
+                      schedule:
+                        type: object
+                required:
+                - id
+                - customer_id
+                - reminder_template_id
+                - active
+                - starts_on
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                active:
+                  type: boolean
+                paused_until:
+                  type: string
+                schedule_override:
+                  type: object
+    delete:
+      summary: retira o lembrete do cliente
+      tags:
+      - Lembretes
+      security:
+      - bearer_auth: []
+      responses:
+        '204':
+          description: retirado
+  "/api/v1/companies/{company_id}/customers/{id}/reminders":
+    parameters:
+    - name: company_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: lembretes ativos de um cliente
+      tags:
+      - Lembretes
+      security:
+      - bearer_auth: []
+      responses:
+        '200':
+          description: lista
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    customer_id:
+                      type: integer
+                    reminder_template_id:
+                      type: integer
+                    schedule_override:
+                      type: object
+                      nullable: true
+                    starts_on:
+                      type: string
+                    ends_on:
+                      type: string
+                      nullable: true
+                    paused_until:
+                      type: string
+                      nullable: true
+                    active:
+                      type: boolean
+                    consent_confirmed:
+                      type: boolean
+                    opted_out_at:
+                      type: string
+                      nullable: true
+                    last_sent_at:
+                      type: string
+                      nullable: true
+                    template:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                        category:
+                          type: string
+                        message:
+                          type: string
+                        schedule:
+                          type: object
+                  required:
+                  - id
+                  - customer_id
+                  - reminder_template_id
+                  - active
+                  - starts_on
   "/api/v1/companies/{company_id}/reports/delinquency":
     parameters:
     - name: company_id
@@ -2077,13 +3719,214 @@ paths:
                     type: integer
                   overdue_today:
                     type: integer
+                  quotes_to_answer:
+                    type: integer
+                  reminder_cycles:
+                    type: array
+                    description: Ciclo do mês dos lembretes de imposto (categoria
+                      tax), só com o recurso de lembretes ligado
+                    items:
+                      type: object
+                      properties:
+                        template_id:
+                          type: integer
+                        name:
+                          type: string
+                        cycle:
+                          type: string
+                        confirmed:
+                          type: integer
+                        no_reply:
+                          type: integer
+                        pending:
+                          type: integer
                   drafts:
                     type: integer
                 required:
                 - conversations_waiting
                 - deliveries_to_confirm
+                - quotes_to_answer
+                - reminder_cycles
                 - overdue_today
                 - drafts
+  "/api/v1/companies/{company_id}/unanswered_questions":
+    parameters:
+    - name: company_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: lista o que os clientes perguntaram e o Dita não soube responder
+      tags:
+      - FAQ
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: status
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    company_id:
+                      type: integer
+                    conversation_id:
+                      type: integer
+                      nullable: true
+                    faq_item_id:
+                      type: integer
+                      nullable: true
+                    text:
+                      type: string
+                    status:
+                      type: string
+                      enum:
+                      - open
+                      - answered
+                      - dismissed
+                    created_at:
+                      type: string
+                    updated_at:
+                      type: string
+                  required:
+                  - id
+                  - text
+                  - status
+                  - created_at
+                  - updated_at
+  "/api/v1/companies/{company_id}/unanswered_questions/{id}/answer":
+    parameters:
+    - name: company_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    post:
+      summary: transforma a dúvida em pergunta frequente
+      tags:
+      - FAQ
+      security:
+      - bearer_auth: []
+      parameters: []
+      responses:
+        '200':
+          description: cria a pergunta frequente e marca como respondida
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  company_id:
+                    type: integer
+                  conversation_id:
+                    type: integer
+                    nullable: true
+                  faq_item_id:
+                    type: integer
+                    nullable: true
+                  text:
+                    type: string
+                  status:
+                    type: string
+                    enum:
+                    - open
+                    - answered
+                    - dismissed
+                  created_at:
+                    type: string
+                  updated_at:
+                    type: string
+                required:
+                - id
+                - text
+                - status
+                - created_at
+                - updated_at
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                question:
+                  type: string
+                answer:
+                  type: string
+              required:
+              - answer
+  "/api/v1/companies/{company_id}/unanswered_questions/{id}/dismiss":
+    parameters:
+    - name: company_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    post:
+      summary: descarta a dúvida
+      tags:
+      - FAQ
+      security:
+      - bearer_auth: []
+      responses:
+        '200':
+          description: marca como descartada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  company_id:
+                    type: integer
+                  conversation_id:
+                    type: integer
+                    nullable: true
+                  faq_item_id:
+                    type: integer
+                    nullable: true
+                  text:
+                    type: string
+                  status:
+                    type: string
+                    enum:
+                    - open
+                    - answered
+                    - dismissed
+                  created_at:
+                    type: string
+                  updated_at:
+                    type: string
+                required:
+                - id
+                - text
+                - status
+                - created_at
+                - updated_at
   "/api/v1/companies/{company_id}/whatsapp/connect":
     parameters:
     - name: company_id
@@ -3412,6 +5255,18 @@ paths:
                     price:
                       type: string
                       nullable: true
+                    price_mode:
+                      type: string
+                      enum:
+                      - fixed
+                      - quote
+                      description: 'quote: sem preço fixo, o atendente informa o valor
+                        depois do pedido'
+                    price_from:
+                      type: string
+                      nullable: true
+                      description: Preço "a partir de", só informativo em produto
+                        sob orçamento
                     active:
                       type: boolean
                       nullable: true
@@ -3465,6 +5320,18 @@ paths:
                   price:
                     type: string
                     nullable: true
+                  price_mode:
+                    type: string
+                    enum:
+                    - fixed
+                    - quote
+                    description: 'quote: sem preço fixo, o atendente informa o valor
+                      depois do pedido'
+                  price_from:
+                    type: string
+                    nullable: true
+                    description: Preço "a partir de", só informativo em produto sob
+                      orçamento
                   active:
                     type: boolean
                     nullable: true
@@ -3548,6 +5415,18 @@ paths:
                   price:
                     type: string
                     nullable: true
+                  price_mode:
+                    type: string
+                    enum:
+                    - fixed
+                    - quote
+                    description: 'quote: sem preço fixo, o atendente informa o valor
+                      depois do pedido'
+                  price_from:
+                    type: string
+                    nullable: true
+                    description: Preço "a partir de", só informativo em produto sob
+                      orçamento
                   active:
                     type: boolean
                     nullable: true
@@ -3636,6 +5515,18 @@ paths:
                   price:
                     type: string
                     nullable: true
+                  price_mode:
+                    type: string
+                    enum:
+                    - fixed
+                    - quote
+                    description: 'quote: sem preço fixo, o atendente informa o valor
+                      depois do pedido'
+                  price_from:
+                    type: string
+                    nullable: true
+                    description: Preço "a partir de", só informativo em produto sob
+                      orçamento
                   active:
                     type: boolean
                     nullable: true
@@ -3898,6 +5789,18 @@ paths:
                   price:
                     type: string
                     nullable: true
+                  price_mode:
+                    type: string
+                    enum:
+                    - fixed
+                    - quote
+                    description: 'quote: sem preço fixo, o atendente informa o valor
+                      depois do pedido'
+                  price_from:
+                    type: string
+                    nullable: true
+                    description: Preço "a partir de", só informativo em produto sob
+                      orçamento
                   active:
                     type: boolean
                     nullable: true
@@ -3972,6 +5875,18 @@ paths:
                     price:
                       type: string
                       nullable: true
+                    price_mode:
+                      type: string
+                      enum:
+                      - fixed
+                      - quote
+                      description: 'quote: sem preço fixo, o atendente informa o valor
+                        depois do pedido'
+                    price_from:
+                      type: string
+                      nullable: true
+                      description: Preço "a partir de", só informativo em produto
+                        sob orçamento
                     active:
                       type: boolean
                       nullable: true
@@ -4071,6 +5986,78 @@ paths:
                 - name
                 - shared_count
                 - fields
+  "/api/v1/companies/{company_id}/orders/{id}/quote":
+    parameters:
+    - name: company_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    post:
+      summary: o atendente informa o valor de um pedido sob orçamento
+      tags:
+      - Pedidos
+      security:
+      - bearer_auth: []
+      parameters: []
+      responses:
+        '200':
+          description: grava os preços, calcula o total, define a validade e avisa
+            o cliente
+        '422':
+          description: pedido que não está aguardando orçamento
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                items:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      unit_price:
+                        type: number
+                    required:
+                    - id
+                    - unit_price
+                fee:
+                  type: number
+                notify:
+                  type: boolean
+              required:
+              - items
+  "/api/v1/companies/{company_id}/orders/{id}/quote/accept":
+    parameters:
+    - name: company_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    post:
+      summary: o dono registra que o cliente aceitou o orçamento por fora do WhatsApp
+      tags:
+      - Pedidos
+      security:
+      - bearer_auth: []
+      responses:
+        '200':
+          description: aceita o orçamento e gera a parcela
+        '422':
+          description: orçamento ainda não enviado
   "/api/v1/companies/{company_id}/simulator/messages":
     parameters:
     - name: company_id

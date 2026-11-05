@@ -4,6 +4,22 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/). Versionament
 **major** = rota removida ou campo obrigatório mudou de forma incompatível; **minor** = rota ou
 campo novo (aditivo); **patch** = descrição/exemplo/correção sem mudar formato.
 
+## [0.20.0] - 2026-11-05
+
+Minor: atendimento em trilhos, orçamento, cobrança recorrente e lembretes (ver `PLANO_TRILHOS_E_SERVICOS.md`).
+- **Perguntas sem resposta:** `GET /companies/{id}/unanswered_questions`, `POST …/{id}/answer` (vira pergunta frequente) e
+  `POST …/{id}/dismiss`.
+- **Orçamento:** `Product` ganha `price_mode` (`fixed` ou `quote`) e `price_from`; `Order` ganha `pricing_status`
+  (`awaiting_quote`, `quoted`, `accepted`, `declined`, `expired`), `quoted_at` e `quote_expires_at`; novos
+  `POST /companies/{id}/orders/{id}/quote` (preços dos itens, taxa opcional, aviso ao cliente) e `POST …/quote/accept`;
+  `GET /orders` aceita `pricing_status`; `GET /summary` ganha `quotes_to_answer`.
+- **Cobrança recorrente:** `GET/POST /companies/{id}/recurring_charges`, `GET/PATCH …/{id}`, `POST …/{id}/pause|resume|end|skip_next`;
+  `Order` ganha `recurring_charge_id` e `period_start`; o cliente ganha `recurring_charges` no detalhe.
+- **Lembretes:** `GET /companies/{id}/reminder_presets`, `GET/POST /reminder_templates`, `PATCH/DELETE …/{id}`,
+  `POST …/{id}/activate` (clientes ou etiqueta), `GET …/{id}/report?cycle=`, `PATCH/DELETE /customer_reminders/{id}`,
+  `GET /customers/{id}/reminders`; `Customer` ganha `tags` (filtro `GET /customers?tag=`); `GET /summary` ganha
+  `reminder_cycles`; `settings.features.reminders` e `settings.notifications.reminders_push` na empresa.
+
 ## [0.19.0] - 2026-10-28
 
 Minor: conectar o WhatsApp pelo código de pareamento. `POST /companies/{id}/whatsapp/connect` aceita `number` (WhatsApp do
